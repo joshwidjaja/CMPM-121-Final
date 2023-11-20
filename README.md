@@ -6,6 +6,10 @@ Engine Lead: Chase Houske
 
 Design Lead: Nicholas Puckdee
 
+Pallavi Rajeev
+
+Reece Garcia
+
 ## Tools and Materials
 1.) For this final project, our team chose the Unity Game Engine because of its user-friendly design and the convenience of using the C# programming language. Unity's accessibility for developers of all levels is complemented by the powerful scripting language C#, which enhances the overall ease and efficiency of the development process. This combination allows us to efficiently bring our creative ideas to life and ensures a smooth development process.
 
