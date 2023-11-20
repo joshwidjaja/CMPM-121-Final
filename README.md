@@ -15,8 +15,13 @@ Design Lead: Nicholas Puckdee
 
 ## Outlook
 What is your team hoping to accomplish that other teams might not attempt?
+
 1.) To be continued...
+
 What do you anticipate being the hardest or riskiest part of the project?
+
 2.) To be continued...
+
 What are you hoping to learn by approaching the project with the tools and materials you selected above?
+
 3.) To be continued...
