@@ -9,8 +9,7 @@ Design Lead: Nicholas Puckdee
 
 2.) Our team chose C# for this project because the Unity Game Engine is built to work with the C# language. Using C# for our project with Unity makes things easier and ensures that the programming language and game engine work well together.
 
-Tell us about which tools you expect to use in the process of authoring your project. You might name the IDE for writing code, the image editor for creating visual assets, or the 3D editor you will use for building your scene. Again, briefly tell us why you made these choices. Maybe one of your teammates feels especially skilled in that tool or it represents something you all want to learn about.
-3.) To be continued...
+3.) The IDE that we will be using will be Visual Studio Code. The image editor for creating visual assets will be...
 
 ## Outlook
 What is your team hoping to accomplish that other teams might not attempt?
