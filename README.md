@@ -1,7 +1,9 @@
 # Devlog Entry - 20 November 2023
 ## Introducing the Team
 Tools Lead: Joshua Widjaja
+
 Engine Lead: Chase Houske
+
 Design Lead: Nicholas Puckdee
 
 ## Tools and Materials
