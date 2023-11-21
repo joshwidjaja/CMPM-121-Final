@@ -24,7 +24,7 @@ What is your team hoping to accomplish that other teams might not attempt?
 
 What do you anticipate being the hardest or riskiest part of the project?
 
-2.) To be continued...
+2.) This will be the first time using Unity and C# for some group members. Although we'll still use the engine for its above benefits, we'll still need to dedicate some extra time to teach them and get them acclimated to the environment.
 
 What are you hoping to learn by approaching the project with the tools and materials you selected above?
 
