@@ -18,4 +18,6 @@ Reese Garcia
 3.) We will use Visual Studio Code as our IDE for this project.
 
 ## Outlook
-This will be the first time using Unity and C# for some group members. Although we'll still use the engine for its above benefits, we'll still need to dedicate some extra time to teach them and get them acclimated to the environment.
+This will be the first time using Unity and C# for some group members. Although we'll still use the engine for its above benefits, we'll still need to dedicate some extra time to teach them and get them acclimated to the environment. By the end of this project, we are hoping to earn further practice and familiarize ourselves with
+the toolset provided within Unity. This will allow us to develop a set of skills in which can be applied to
+future Unity based projects in the future.
