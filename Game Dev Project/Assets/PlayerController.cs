@@ -9,6 +9,9 @@ public class PlayerController : MonoBehaviour
         down
     }
     jumpButtonState jumpState;
+
+    public CropManager cropManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,7 +36,7 @@ public class PlayerController : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Space)){
             
             if(jumpState == jumpButtonState.up){
-                gameObject.GetComponent<CropManager>().PlayerPlant(transform.position.x, transform.position.z);//Important that this is z, not y!
+                cropManager.PlayerPlant(transform.position.x, transform.position.z);//Important that this is z, not y!
                 jumpState = jumpButtonState.down;
             }
         }
