@@ -22,16 +22,16 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.UpArrow)){
-            transform.Translate(new Vector3(0.0f, 0.0f, 1.0f));
+            transform.Translate(Vector3.forward);
         }
         if(Input.GetKeyDown(KeyCode.DownArrow)){
-            transform.Translate(new Vector3(0.0f, 0.0f, -1.0f));
+            transform.Translate(Vector3.back);
         }
         if(Input.GetKeyDown(KeyCode.LeftArrow)){
-            transform.Translate(new Vector3(-1.0f, 0.0f, 0.0f));
+            transform.Translate(Vector3.left);
         }
         if(Input.GetKeyDown(KeyCode.RightArrow)){
-            transform.Translate(new Vector3(1.0f, 0.0f, 0.0f));
+            transform.Translate(Vector3.right);
         }
         if(Input.GetKeyDown(KeyCode.Space)){
             
