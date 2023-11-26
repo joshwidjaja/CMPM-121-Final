@@ -48,9 +48,10 @@ public class PlayerController : MonoBehaviour
         }
         if(Input.GetKeyUp(KeyCode.Z) || Input.GetKeyUp(KeyCode.X)){
             jumpState = jumpButtonState.up;
+            cropManager.triggerTurn();
         }
-    }
-    void triggerTurn(){ //Once player does an action, this is triggered, should randomly add water or sun to cells or whatever
-
+        if (Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.DownArrow) || Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.RightArrow)) {
+            cropManager.triggerTurn();
+        }
     }
 }

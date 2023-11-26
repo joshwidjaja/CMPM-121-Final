@@ -1,9 +1,5 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class CropManager : MonoBehaviour
 {
@@ -23,18 +19,18 @@ public class CropManager : MonoBehaviour
 
         for(int x = FIRST_HALF_START; x < FIRST_HALF_END; x++){ //Left half of board ex: -5 to 0(not inclusive)
             for(int y = FIRST_HALF_START; y < FIRST_HALF_END; y++){ 
-                Board[x + (UNIT_TILE), y + (UNIT_TILE)] = new CropCell(x, y);
+                Board[x + UNIT_TILE, y + UNIT_TILE] = new CropCell(x, y);
              }
              for(int y = SECOND_HALF_START ; y < SECOND_HALF_END; y++){ 
-                Board[x + (UNIT_TILE), y + (UNIT_TILE) - 1] = new CropCell(x, y);
+                Board[x + UNIT_TILE, y + UNIT_TILE - 1] = new CropCell(x, y);
              }
         }
         for(int x = SECOND_HALF_START ; x < SECOND_HALF_END; x++){ //Right half
             for(int y = FIRST_HALF_START; y < FIRST_HALF_END; y++){ 
-                Board[x + (UNIT_TILE) - 1, y + (UNIT_TILE)] = new CropCell(x, y);
+                Board[x + UNIT_TILE - 1, y + UNIT_TILE] = new CropCell(x, y);
              }
              for(int y = SECOND_HALF_START ; y < SECOND_HALF_END; y++){ 
-                Board[x + (UNIT_TILE) - 1, y + (UNIT_TILE) - 1] = new CropCell(x, y);
+                Board[x + UNIT_TILE - 1, y + UNIT_TILE - 1] = new CropCell(x, y);
              }
         }
         //RegenerateBoard();
@@ -53,41 +49,44 @@ public class CropManager : MonoBehaviour
         }
     }
     public void PlayerPlant(float playerX, float playerY){
-        CropCell cell;
         for(int x = 0; x < BOARD_SIZE; x++){
             for(int y = 0; y < BOARD_SIZE; y++){
-                cell = Board[x, y];
+                CropCell cell = Board[x, y];
                 (float realX, float realY) = cell.getRealCoordinates();
-                if((Math.Abs((realX - playerX)) < 1) && (Math.Abs((realY - playerY)) < 1)){
+                if((Math.Abs(realX - playerX) < 1) && (Math.Abs(realY - playerY) < 1)){
                     bool result = Board[x, y].Plant();
-                    if(result) {
-                        x = BOARD_SIZE;
-                        y = BOARD_SIZE;
-                    }
+                    if(result) return;
                 }
             }
         }   
     }
     public void PlayerHarvest(float playerX, float playerY){
-        CropCell cell;
         for(int x = 0; x < BOARD_SIZE; x++){
             for(int y = 0; y < BOARD_SIZE; y++){
-                cell = Board[x, y];
+                CropCell cell = Board[x, y];
                 (float realX, float realY) = cell.getRealCoordinates();
-                if((Math.Abs((realX - playerX)) < 1) && (Math.Abs((realY - playerY)) < 1)){
+                if((Math.Abs(realX - playerX) < 1) && (Math.Abs(realY - playerY) < 1)){
                     bool result = Board[x, y].Harvest();
-                    if(result){
-                        x = BOARD_SIZE;
-                        y = BOARD_SIZE;
-                    }
+                    if(result) return;
                 }
             }
         }   
     }
+
+    public void triggerTurn(){ //Once player does an action, this is triggered, should randomly add water or sun to cells or whatever
+        for (int x = 0; x < BOARD_SIZE; x++) {
+            for (int y = 0; y < BOARD_SIZE; y++) {
+                CropCell cell = Board[x, y];
+                cell.ResetSunLevel();
+                cell.SpawnSun();
+                cell.SpawnWater();
+            }
+        }
+    }
     public class CropCell{ //Planting a seed instantly makes the crop level 1
         GameObject cropObject;
-        int sunLevel;
-        int waterLevel;
+        public int sunLevel;
+        public int waterLevel;
         public float xPos;
         public float yPos;
         public CropCell(int xPos, int yPos){
@@ -102,6 +101,22 @@ public class CropManager : MonoBehaviour
             waterLevel = 0;
             if(cropObject != null){
                 Destroy(cropObject);
+            }
+        }
+        public void ResetSunLevel() {
+            sunLevel--;
+            if (sunLevel < 0) sunLevel = 0;
+        }
+        public void SpawnSun() {
+            int sunSpawnRate = 3;
+            if (sunSpawnRate > UnityEngine.Random.Range(0, 10)) {
+                sunLevel++;
+            }
+        }
+        public void SpawnWater() {
+            int waterSpawnRate = 3;
+            if (waterSpawnRate > UnityEngine.Random.Range(0, 10)) {
+                waterLevel++;
             }
         }
         public bool Plant(){ // Was planting successful?
