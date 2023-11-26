@@ -6,7 +6,6 @@ public class CropManager : MonoBehaviour
     // Start is called before the first frame update
     CropCell[,] Board; //A 2d array where each row/column is the same size
     int BOARD_SIZE = 10;
-    int counter = 0;
     void Start()
     { 
         Board = new CropCell[BOARD_SIZE, BOARD_SIZE]; //Each "cell"'s area/square is from index x to index x+1, and index y to index y+1
