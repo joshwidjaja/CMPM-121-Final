@@ -33,14 +33,20 @@ public class PlayerController : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.RightArrow)){
             transform.Translate(Vector3.right);
         }
-        if(Input.GetKeyDown(KeyCode.Space)){
+        if(Input.GetKeyDown(KeyCode.Z)){
             
             if(jumpState == jumpButtonState.up){
                 cropManager.PlayerPlant(transform.position.x, transform.position.z);//Important that this is z, not y!
                 jumpState = jumpButtonState.down;
             }
         }
-        if(Input.GetKeyUp(KeyCode.Space)){
+        if (Input.GetKeyDown(KeyCode.X)) {
+            if (jumpState == jumpButtonState.up) {
+                cropManager.PlayerHarvest(transform.position.x, transform.position.z);
+                jumpState = jumpButtonState.down;
+            }
+        }
+        if(Input.GetKeyUp(KeyCode.Z) || Input.GetKeyUp(KeyCode.X)){
             jumpState = jumpButtonState.up;
         }
     }
