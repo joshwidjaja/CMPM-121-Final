@@ -6,6 +6,7 @@ public class CropManager : MonoBehaviour
     // Start is called before the first frame update
     CropCell[,] Board; //A 2d array where each row/column is the same size
     int BOARD_SIZE = 10;
+    String[] speciesList = {"tomato", "corn", "melon"};
     void Start()
     { 
         Board = new CropCell[BOARD_SIZE, BOARD_SIZE]; //Each "cell"'s area/square is from index x to index x+1, and index y to index y+1
@@ -18,21 +19,21 @@ public class CropManager : MonoBehaviour
 
         for(int x = FIRST_HALF_START; x < FIRST_HALF_END; x++){ //Left half of board ex: -5 to 0(not inclusive)
             for(int y = FIRST_HALF_START; y < FIRST_HALF_END; y++){ 
-                Board[x + UNIT_TILE, y + UNIT_TILE] = new CropCell(x, y);
+                Board[x + UNIT_TILE, y + UNIT_TILE] = new CropCell(x, y, this.speciesList[UnityEngine.Random.Range(0, 3)]);
              }
              for(int y = SECOND_HALF_START ; y < SECOND_HALF_END; y++){ 
-                Board[x + UNIT_TILE, y + UNIT_TILE - 1] = new CropCell(x, y);
+                Board[x + UNIT_TILE, y + UNIT_TILE - 1] = new CropCell(x, y, this.speciesList[UnityEngine.Random.Range(0, 3)]);
              }
         }
         for(int x = SECOND_HALF_START ; x < SECOND_HALF_END; x++){ //Right half
             for(int y = FIRST_HALF_START; y < FIRST_HALF_END; y++){ 
-                Board[x + UNIT_TILE - 1, y + UNIT_TILE] = new CropCell(x, y);
+                Board[x + UNIT_TILE - 1, y + UNIT_TILE] = new CropCell(x, y, this.speciesList[UnityEngine.Random.Range(0, 3)]);
              }
              for(int y = SECOND_HALF_START ; y < SECOND_HALF_END; y++){ 
-                Board[x + UNIT_TILE - 1, y + UNIT_TILE - 1] = new CropCell(x, y);
+                Board[x + UNIT_TILE - 1, y + UNIT_TILE - 1] = new CropCell(x, y, this.speciesList[UnityEngine.Random.Range(0, 3)]);
              }
         }
-        //RegenerateBoard();
+        RegenerateBoard();
     }
 
     // Update is called once per frame
@@ -41,9 +42,13 @@ public class CropManager : MonoBehaviour
         
     }
     void RegenerateBoard(){
+        System.Random plantRandom = new System.Random();
         for(int i = 0; i < BOARD_SIZE; i++){
             for(int j = 0; j < BOARD_SIZE; j++){
-                Board[i, j].Plant(); //To do: Only generate crops with a 30% chance
+                double plantChance = plantRandom.NextDouble();
+                if(plantChance < 0.3){
+                    Board[i, j].Plant(); //To do: Only generate crops with a 30% chance
+                }
             }
         }
     }
@@ -88,12 +93,16 @@ public class CropManager : MonoBehaviour
         public int waterLevel;
         public float xPos;
         public float yPos;
-        public CropCell(int xPos, int yPos){
+        public int growthLevel;
+        String species;
+        public CropCell(int xPos, int yPos, String species){
             cropObject = null; // Null means no seed or plant there
             sunLevel = 0;
             waterLevel = 0;
             this.xPos = xPos;
             this.yPos = yPos;
+            growthLevel = 0;
+            this.species = species;
         }
         public void ResetCell(){
             sunLevel = 0;
@@ -119,8 +128,26 @@ public class CropManager : MonoBehaviour
             }
         }
         public bool Plant(){ // Was planting successful?
+            float[] sizeList = {0.2f, 0.5f, 0.8f};
             if(cropObject == null){
-                cropObject = new GameObject("crop");
+                cropObject = GameObject.CreatePrimitive(PrimitiveType.Cube);//new GameObject("crop");
+                cropObject.transform.localScale = new Vector3(sizeList[this.growthLevel], sizeList[this.growthLevel], sizeList[this.growthLevel]);
+                (float newx, float newy) = this.getRealCoordinates();                                                               
+                cropObject.transform.position = new Vector3(newx, 0.0f, newy);
+                Material myMaterial = new Material(Shader.Find("Standard"));
+                cropObject.GetComponent<Renderer>().material = myMaterial;
+                switch(species){
+                    case "tomato":
+                        myMaterial.color = Color.red;
+                        break;
+                    case "corn":
+                        myMaterial.color = Color.yellow;
+                        break;
+                    case "melon":
+                        myMaterial.color = Color.green;
+                        break;
+
+                }
                 return true;
             }
             return false;
