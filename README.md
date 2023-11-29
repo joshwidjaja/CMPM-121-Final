@@ -42,9 +42,11 @@ Each crop cell has a growth level being an int 0-2 representing level 1-3. Each 
 [F0.f] 
 Simple spatial rules govern plant growth based on sun, water, and nearby plants (growth is unlocked by satisfying conditions).
 If the sun and water level exceeds a certain value, the crop's growth level will increase. It can increase multiple levels each turn if the water has scaled to a high value with previous turns having bad sun rolls, making the crop unable to grow even with high water values. The crop growing increases the crop's x, y, and z scales.
+
 [F0.g] 
 A play scenario is completed when some condition is satisfied (e.g. at least X plants at growth level Y or above).
 Based on the crop level being harvested, that crop level number is added to a total points. Since crops you plant start at level 0, if you harvest an "unleveled" one you get 0 points. If the points exceeds 10, you get a message in the console saying "You Win!".
+
 ## Reflection
 Looking back on how you achieved the F0 requirements, how has your team’s plan changed? Did you reconsider any of the choices you previously described for Tools and Materials or your Roles? It would be very suspicious if you didn’t need to change anything. There’s learning value in you documenting how your team’s thinking has changed over time.
-We were thinking of having copies of the crops in the scene view but ever since your announcement wanting us not using scene view at all really, we decided to make the crops colored cubes for now as those can easily be created in code without applying some mesh to them. The setup of having a crop manager and a crop cell class and their roles have changed over time. Originally there was no crop cell class.
+Initially we were thinking of having copies of the crops in the scene view. However, since an announcement was made not wanting us to use the scene view at all, we realized we had to make some changes in our plan. So instead of using the scene view, we decided to make the crops colored cubes for now. This allows us to easily create the crops in code without having to apply some mesh to them. The setup of having a crop manager and a crop cell class and their roles have also changed over time. Originally there was no crop cell class.
