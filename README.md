@@ -36,8 +36,14 @@ When the player’s coordinates are close to a plant, they are able to reap or s
 When the player triggers an event to advance their turn, the game will reset the sun level and spawn sun and water for the next turn. This is accomplished by calling a series of functions to reset a turn. At the end of a turn, the first function will reset the sun level to 0. Then two more functions are called to randomly generate numbers, determining the sun level and water level for the next turn.
 
 [F0.e] 
-[F0.f] 
-[F0.g] 
+Each plant on the grid has a type (e.g. one of 3 species) and a growth level (e.g. “level 1”, “level 2”, “level 3”).
+Each crop cell has a growth level being an int 0-2 representing level 1-3. Each crop cell also has a species, a string, which is tomato, corn, or melon. The cube is accordingly red, yellow, or green based on the species.
 
+[F0.f] 
+Simple spatial rules govern plant growth based on sun, water, and nearby plants (growth is unlocked by satisfying conditions).
+If the sun and water level exceeds a certain value, the crop's growth level will increase. It can increase multiple levels each turn if the water has scaled to a high value with previous turns having bad sun rolls, making the crop unable to grow even with high water values. The crop growing increases the crop's x, y, and z scales.
+[F0.g] 
+A play scenario is completed when some condition is satisfied (e.g. at least X plants at growth level Y or above).
+Based on the crop level being harvested, that crop level number is added to a total points. Since crops you plant start at level 0, if you harvest an "unleveled" one you get 0 points. If the points exceeds 10, you get a message in the console saying "You Win!".
 ## Reflection
 Looking back on how you achieved the F0 requirements, how has your team’s plan changed? Did you reconsider any of the choices you previously described for Tools and Materials or your Roles? It would be very suspicious if you didn’t need to change anything. There’s learning value in you documenting how your team’s thinking has changed over time.
