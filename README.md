@@ -17,7 +17,18 @@ Reese Garcia
 
 3.) We will use Visual Studio Code as our IDE for this project.
 
+(Resubmit)
+
+Tell us about which tools you expect to use in the process of authoring your project. You might name the IDE for writing code, the image editor for creating visual assets, or the 3D editor you will use for building your scene. Again, briefly tell us why you made these choices. Maybe one of your teammates feels especially skilled in that tool or it represents something you all want to learn about.
+
 ## Outlook
 This will be the first time using Unity and C# for some group members. Although we'll still use the engine for its above benefits, we'll still need to dedicate some extra time to teach them and get them acclimated to the environment. By the end of this project, we are hoping to earn further practice and familiarize ourselves with
 the toolset provided within Unity. This will allow us to develop a set of skills in which can be applied to
 future Unity based projects in the future.
+
+## How we satisfied the software requirements
+For each of the F0 requirements, give a paragraph of explanation for how your game’s implementation satisfies the requirements.
+Your team can earn partial credit for covering only a subset of the F0 requirements at this stage. (It is much better to satisfy the requirements in a sloppy way right now than lock in your partial credit.)
+
+## Reflection
+Looking back on how you achieved the F0 requirements, how has your team’s plan changed? Did you reconsider any of the choices you previously described for Tools and Materials or your Roles? It would be very suspicious if you didn’t need to change anything. There’s learning value in you documenting how your team’s thinking has changed over time.
