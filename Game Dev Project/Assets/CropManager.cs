@@ -6,6 +6,7 @@ public class CropManager : MonoBehaviour
     // Start is called before the first frame update
     CropCell[,] Board; //A 2d array where each row/column is the same size
     int BOARD_SIZE = 10;
+    int totalpoints = 0;
     String[] speciesList = {"tomato", "corn", "melon"};
     void Start()
     { 
@@ -70,8 +71,14 @@ public class CropManager : MonoBehaviour
                 CropCell cell = Board[x, y];
                 (float realX, float realY) = cell.getRealCoordinates();
                 if((Math.Abs(realX - playerX) < 1) && (Math.Abs(realY - playerY) < 1)){
-                    bool result = Board[x, y].Harvest();
-                    if(result) return;
+                    int result = Board[x, y].Harvest();
+                    if(result != (-1)){
+                        totalpoints += result;
+                        if(totalpoints >= 10){
+                            Debug.Log("You win!");
+                        }
+                        return;
+                    } 
                 }
             }
         }   
@@ -81,9 +88,11 @@ public class CropManager : MonoBehaviour
         for (int x = 0; x < BOARD_SIZE; x++) {
             for (int y = 0; y < BOARD_SIZE; y++) {
                 CropCell cell = Board[x, y];
+                //cell.ResetSunLevel();
                 cell.ResetSunLevel();
                 cell.SpawnSun();
                 cell.SpawnWater();
+                cell.SizeCheck();
             }
         }
     }
@@ -118,8 +127,10 @@ public class CropManager : MonoBehaviour
         public void SpawnSun() {
             int sunSpawnRate = 3;
             if (sunSpawnRate > UnityEngine.Random.Range(0, 10)) {
-                sunLevel++;
+                //sunLevel++;
+                sunLevel = UnityEngine.Random.Range(1,6);
             }
+            
         }
         public void SpawnWater() {
             int waterSpawnRate = 3;
@@ -128,10 +139,10 @@ public class CropManager : MonoBehaviour
             }
         }
         public bool Plant(){ // Was planting successful?
-            float[] sizeList = {0.2f, 0.5f, 0.8f};
             if(cropObject == null){
                 cropObject = GameObject.CreatePrimitive(PrimitiveType.Cube);//new GameObject("crop");
-                cropObject.transform.localScale = new Vector3(sizeList[this.growthLevel], sizeList[this.growthLevel], sizeList[this.growthLevel]);
+                cropObject.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+                //cropObject.transform.localScale = new Vector3(sizeList[this.growthLevel], sizeList[this.growthLevel], sizeList[this.growthLevel]);
                 (float newx, float newy) = this.getRealCoordinates();                                                               
                 cropObject.transform.position = new Vector3(newx, 0.0f, newy);
                 Material myMaterial = new Material(Shader.Find("Standard"));
@@ -152,12 +163,33 @@ public class CropManager : MonoBehaviour
             }
             return false;
         }
-        public bool Harvest(){
+        public int Harvest(){
             if(cropObject != null){
                 Destroy(cropObject);
-                return true;
+                int tempGrowth = growthLevel;
+                this.growthLevel = 0;
+                this.sunLevel = 0;
+                this.waterLevel = 0;
+                return tempGrowth;
             }
-            return false;
+            return -1;
+        }
+        public void SizeCheck(){
+            if(cropObject == null){
+                return;
+            }
+            float[] sizeList = {0.2f, 0.3f, 0.4f, 0.5f};
+            if((this.sunLevel >= 1) && (this.waterLevel >= 1) && (this.growthLevel < 1)){
+                this.growthLevel = 1;
+            }
+            if((this.sunLevel >= 3) && (this.waterLevel >= 3) && (this.growthLevel < 2)){
+                this.growthLevel = 2;
+            }
+            if((this.sunLevel >= 5) && (this.waterLevel >= 5) && (this.growthLevel < 3)){
+                this.growthLevel = 3;
+            }
+            cropObject.transform.localScale = new Vector3(sizeList[this.growthLevel], sizeList[this.growthLevel], sizeList[this.growthLevel]);
+            
         }
         public (float xPos, float yPos) getRealCoordinates(){
             float realXPos = this.xPos;
