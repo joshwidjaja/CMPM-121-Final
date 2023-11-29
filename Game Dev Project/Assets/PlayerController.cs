@@ -48,10 +48,10 @@ public class PlayerController : MonoBehaviour
         }
         if(Input.GetKeyUp(KeyCode.Z) || Input.GetKeyUp(KeyCode.X)){
             jumpState = jumpButtonState.up;
-            cropManager.triggerTurn();
+            cropManager.TriggerTurn();
         }
         if (Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.DownArrow) || Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.RightArrow)) {
-            cropManager.triggerTurn();
+            cropManager.TriggerTurn();
         }
     }
 }
