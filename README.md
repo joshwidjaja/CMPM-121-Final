@@ -15,7 +15,7 @@ Reese Garcia
 
 2.) Our team chose C# for this project because the Unity Game Engine is built to work with the C# language. Using C# for our project with Unity makes things easier and ensures that the programming language and game engine work well together.
 
-3.) We will use Visual Studio Code as our IDE for this project.
+3.) We will use Visual Studio Code as our IDE for this project. We're using it because we've pretty much used it in all our other classes and it has useful features like intellisense.
 
 (Resubmit)
 
