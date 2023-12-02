@@ -5,11 +5,11 @@ public class CropManager : MonoBehaviour
 {
     // Start is called before the first frame update
     private CropCell[,] Board; //A 2d array where each row/column is the same size
-    private readonly int BOARD_SIZE = 10;
+    private static int BOARD_SIZE = 10;
     private int totalPoints = 0;
     private readonly string[] speciesList = {"tomato", "corn", "melon"};
 
-    private int totalBoardCells = BOARD_SIZE * BOARD_SIZE;
+    private static int totalBoardCells = BOARD_SIZE * BOARD_SIZE;
     private CropCellStruct[] byteArray = new CropCellStruct[totalBoardCells];
 
     private void Start()
@@ -101,13 +101,22 @@ public class CropManager : MonoBehaviour
     {
         public CropCellStruct(float x, float y, string species)
         {
-            xPos = x;
-            yPos = y;
+            this.cropObject = null;
+            this.xPos = x;
+            this.yPos = y;
             this.species = species;
-            sunLevel = 0;
-            waterLevel = 0;
-            growthLevel = 0;
+            this.sunLevel = 0;
+            this.waterLevel = 0;
+            this.growthLevel = 0;
         }
+
+        public GameObject cropObject {get;}
+        public float xPos {get;}
+        public float yPos {get;}
+        public string species {get;}
+        public int sunLevel {get;}
+        public int waterLevel {get;}
+        public int growthLevel {get;}
     }
     public class CropCell
     { //Planting a seed instantly makes the crop level 1
