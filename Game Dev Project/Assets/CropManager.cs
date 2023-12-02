@@ -9,6 +9,11 @@ public class CropManager : MonoBehaviour
     private int totalPoints = 0;
     private readonly string[] speciesList = {"tomato", "corn", "melon"};
 
+    private int totalBoardCells = BOARD_SIZE * BOARD_SIZE;
+    private int numberOfElements = 3;
+    private int byteArraySize = totalBoardCells * numberOfElements;
+    private byte[] byteArray = new byte[byteArraySize];
+
     private void Start()
     { 
         Board = new CropCell[BOARD_SIZE, BOARD_SIZE]; //Each "cell"'s area/square is from index x to index x+1, and index y to index y+1
@@ -38,7 +43,8 @@ public class CropManager : MonoBehaviour
         RegenerateBoard();
     }
 
-    private void RegenerateBoard(){
+    private void RegenerateBoard()
+    {
         System.Random plantRandom = new();
         for(int i = 0; i < BOARD_SIZE; i++){
             for(int j = 0; j < BOARD_SIZE; j++){
@@ -49,7 +55,8 @@ public class CropManager : MonoBehaviour
             }
         }
     }
-    public void PlayerPlant(float playerX, float playerY){
+    public void PlayerPlant(float playerX, float playerY)
+    {
         for(int x = 0; x < BOARD_SIZE; x++){
             for(int y = 0; y < BOARD_SIZE; y++){
                 CropCell cell = Board[x, y];
@@ -61,7 +68,8 @@ public class CropManager : MonoBehaviour
             }
         }   
     }
-    public void PlayerHarvest(float playerX, float playerY){
+    public void PlayerHarvest(float playerX, float playerY)
+    {
         for(int x = 0; x < BOARD_SIZE; x++){
             for(int y = 0; y < BOARD_SIZE; y++){
                 CropCell cell = Board[x, y];
@@ -91,7 +99,8 @@ public class CropManager : MonoBehaviour
             }
         }
     }
-    public class CropCell{ //Planting a seed instantly makes the crop level 1
+    public class CropCell
+    { //Planting a seed instantly makes the crop level 1
         private GameObject cropObject;
         public int sunLevel;
         public int waterLevel;
@@ -99,7 +108,8 @@ public class CropManager : MonoBehaviour
         public float yPos;
         public int growthLevel;
         private readonly string species;
-        public CropCell(int xPos, int yPos, string species){
+        public CropCell(int xPos, int yPos, string species)
+        {
             cropObject = null; // Null means no seed or plant there
             sunLevel = 0;
             waterLevel = 0;
@@ -108,31 +118,36 @@ public class CropManager : MonoBehaviour
             growthLevel = 0;
             this.species = species;
         }
-        public void ResetCell(){
+        public void ResetCell()
+        {
             sunLevel = 0;
             waterLevel = 0;
             if(cropObject != null){
                 Destroy(cropObject);
             }
         }
-        public void ResetSunLevel() {
+        public void ResetSunLevel()
+        {
             sunLevel--;
             if (sunLevel < 0) sunLevel = 0;
         }
-        public void SpawnSun() {
+        public void SpawnSun()
+        {
             int sunSpawnRate = 3;
             if (sunSpawnRate > UnityEngine.Random.Range(0, 10)) {
                 sunLevel = UnityEngine.Random.Range(1,6);
             }
             
         }
-        public void SpawnWater() {
+        public void SpawnWater()
+        {
             int waterSpawnRate = 3;
             if (waterSpawnRate > UnityEngine.Random.Range(0, 10)) {
                 waterLevel++;
             }
         }
-        public bool Plant(){ // Was planting successful?
+        public bool Plant()
+        { // Was planting successful?
             if(cropObject == null){
                 cropObject = GameObject.CreatePrimitive(PrimitiveType.Cube);//new GameObject("crop");
                 cropObject.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
@@ -157,7 +172,8 @@ public class CropManager : MonoBehaviour
             }
             return false;
         }
-        public int Harvest(){
+        public int Harvest()
+        {
             if(cropObject != null){
                 Destroy(cropObject);
                 int tempGrowth = growthLevel;
@@ -168,7 +184,8 @@ public class CropManager : MonoBehaviour
             }
             return -1;
         }
-        public void SizeCheck(){
+        public void SizeCheck()
+        {
             if(cropObject == null){
                 return;
             }
@@ -185,7 +202,8 @@ public class CropManager : MonoBehaviour
             cropObject.transform.localScale = new Vector3(sizeList[growthLevel], sizeList[growthLevel], sizeList[growthLevel]);
             
         }
-        public (float xPos, float yPos) GetRealCoordinates(){
+        public (float xPos, float yPos) GetRealCoordinates()
+        {
             float realXPos = xPos;
             float realYPos = yPos;
             if(realXPos > 0){
