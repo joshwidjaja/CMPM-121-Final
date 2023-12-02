@@ -10,9 +10,7 @@ public class CropManager : MonoBehaviour
     private readonly string[] speciesList = {"tomato", "corn", "melon"};
 
     private int totalBoardCells = BOARD_SIZE * BOARD_SIZE;
-    private int numberOfElements = 3;
-    private int byteArraySize = totalBoardCells * numberOfElements;
-    private byte[] byteArray = new byte[byteArraySize];
+    private CropCellStruct[] byteArray = new CropCellStruct[totalBoardCells];
 
     private void Start()
     { 
@@ -97,6 +95,18 @@ public class CropManager : MonoBehaviour
                 cell.SpawnWater();
                 cell.SizeCheck();
             }
+        }
+    }
+    public struct CropCellStruct
+    {
+        public CropCellStruct(float x, float y, string species)
+        {
+            xPos = x;
+            yPos = y;
+            this.species = species;
+            sunLevel = 0;
+            waterLevel = 0;
+            growthLevel = 0;
         }
     }
     public class CropCell
