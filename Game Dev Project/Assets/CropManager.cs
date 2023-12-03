@@ -9,10 +9,11 @@ public class CropManager : MonoBehaviour
     private int totalPoints = 0;
     private readonly string[] speciesList = { "tomato", "corn", "melon" };
 
+    private GameObject[] cropObjects; // unsure if it will work
     private byte[] sunLevels;
     private byte[] waterLevels;
     private byte[] growthLevels;
-    private byte[] cropSpecies;
+    private string[] cropSpecies;
 
     private void Start()
     {
@@ -20,13 +21,14 @@ public class CropManager : MonoBehaviour
         int totalCells = BOARD_SIZE * BOARD_SIZE;
 
         // Arrays to store sun, water, growth levels, and crop species for each cell
+        cropObjects = new GameObject[totalCells];
         sunLevels = new byte[totalCells];
         waterLevels = new byte[totalCells];
         growthLevels = new byte[totalCells];
-        cropSpecies = new byte[totalCells];
+        cropSpecies = new string[totalCells];
 
         // Initialize your arrays with random values here...
-        InitializeArrays();
+        // InitializeArrays();
 
         // new implementation
         for (int x = 0; x < BOARD_SIZE; x++)
@@ -35,7 +37,8 @@ public class CropManager : MonoBehaviour
             {
                 int index = x * BOARD_SIZE + y;
 
-                // randomize cropSpecies here
+                cropObjects[index] = null;
+                cropSpecies[index] = speciesList[UnityEngine.Random.Range(0,3)];
                 sunLevels[index] = 0;
                 waterLevels[index] = 0;
                 growthLevels[index] = 0;
@@ -87,7 +90,8 @@ public class CropManager : MonoBehaviour
                 double plantChance = plantRandom.NextDouble();
                 if (plantChance < 0.3)
                 {
-                    Board[i, j].Plant(); // To do: Only generate crops with a 30% chance
+                    Board[i, j].Plant(); //To do: Only generate crops with a 30% chance
+                    Plant(i, j);
                 }
             }
         }
@@ -152,12 +156,85 @@ public class CropManager : MonoBehaviour
         return growthLevels[index];
     }
 
-    public int GetSpecies(int x, int y)
+    public string GetSpecies(int x, int y)
     {
         int index = x * BOARD_SIZE + y;
         return cropSpecies[index];
     }
 
+    public bool Plant(int x, int y)
+    {
+        int index = x * BOARD_SIZE + y;
+        if (cropObjects[index] == null)
+        {
+            cropObjects[index] = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cropObjects[index].transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+            // NEEDS TO BE REWRITTEN
+            (float newX, float newY) = GetRealCoordinates();
+            cropObjects[index].transform.position = new Vector3(newX, 0.0f, newY);
+            //
+            Material myMaterial = new(Shader.Find("Standard"));
+            cropObjects[index].GetComponent<Renderer>().material = myMaterial;
+            switch (cropSpecies[index])
+            {
+                case "tomato":
+                    myMaterial.color = Color.red;
+                    break;
+                case "corn":
+                    myMaterial.color = Color.yellow;
+                    break;
+                case "melon":
+                    myMaterial.color = Color.green;
+                    break;
+            }
+            return true;
+        }
+        return false;
+    }
+
+   /* public (float xPos, float yPos) GetRealCoordinates(x, y)
+   {
+
+   }*/
+
+    public void ResetCell(int x, int y)
+    {
+        int index = x * BOARD_SIZE + y;
+        sunLevels[index] = 0;
+        waterLevels[index] = 0;
+        if (cropObjects[index] != null)
+        {
+            Destroy(cropObjects[index]);
+        }
+    }
+
+    public void ResetSunLevel(int x, int y)
+    {
+        int index = x * BOARD_SIZE + y;
+        sunLevels[index]--;
+        if (sunLevels[index] < 0) sunLevels[index] = 0;
+    }
+
+    public void SpawnSun(int x, int y)
+    {
+        int index = x * BOARD_SIZE + y;
+        int sunSpawnRate = 3;
+        if (sunSpawnRate > UnityEngine.Random.Range(0, 10))
+        {
+            sunLevels[index] = UnityEngine.Random.Range(1, 6);
+        }
+    }
+
+    public void SpawnWater(int x, int y)
+    {
+        int index = x * BOARD_SIZE + y;
+        int waterSpawnRate = 3;
+        if (waterSpawnRate > UnityEngine.Random.Range(0, 10))
+        {
+            waterLevels[index]++;
+        }
+    }
+    
     public void TriggerTurn()
     { //Once player does an action, this is triggered, should randomly add water or sun to cells or whatever
         for (int x = 0; x < BOARD_SIZE; x++)
