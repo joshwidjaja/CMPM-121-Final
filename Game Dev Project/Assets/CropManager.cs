@@ -4,8 +4,8 @@ using UnityEngine;
 public class CropManager : MonoBehaviour
 {
     // Start is called before the first frame update
-    private CropCell[,] Board;  //A 2d array where each row/column is the same size
-    private static int BOARD_SIZE = 10;
+    private CropCell[,] Board; //A 2d array where each row/column is the same size
+    private int BOARD_SIZE = 10;
     private int totalPoints = 0;
     private readonly string[] speciesList = { "tomato", "corn", "melon" };
 
@@ -25,6 +25,9 @@ public class CropManager : MonoBehaviour
         growthLevels = new byte[totalCells];
         cropSpecies = new byte[totalCells];
 
+        // Initialize your arrays with random values here...
+        InitializeArrays();
+
         // new implementation
         for (int x = 0; x < BOARD_SIZE; x++)
         {
@@ -39,9 +42,8 @@ public class CropManager : MonoBehaviour
             }
         }
 
-
         // current implementation
-        Board = new CropCell[BOARD_SIZE, BOARD_SIZE]; //Each "cell"'s area/square is from index x to index x+1, and index y to index y+1
+        Board = new CropCell[BOARD_SIZE, BOARD_SIZE]; // Each "cell"'s area/square is from index x to index x+1, and index y to index y+1
         int UNIT_TILE = BOARD_SIZE / 2;
         int FIRST_HALF_START = 0 - UNIT_TILE;
         int FIRST_HALF_END = 0;
@@ -50,7 +52,7 @@ public class CropManager : MonoBehaviour
         int SECOND_HALF_END = UNIT_TILE + 1;
 
         for (int x = FIRST_HALF_START; x < FIRST_HALF_END; x++)
-        { //Left half of board ex: -5 to 0(not inclusive)
+        { // Left half of board ex: -5 to 0(not inclusive)
             for (int y = FIRST_HALF_START; y < FIRST_HALF_END; y++)
             {
                 Board[x + UNIT_TILE, y + UNIT_TILE] = new CropCell(x, y, speciesList[UnityEngine.Random.Range(0, 3)]);
@@ -61,7 +63,7 @@ public class CropManager : MonoBehaviour
             }
         }
         for (int x = SECOND_HALF_START; x < SECOND_HALF_END; x++)
-        { //Right half
+        { // Right half
             for (int y = FIRST_HALF_START; y < FIRST_HALF_END; y++)
             {
                 Board[x + UNIT_TILE - 1, y + UNIT_TILE] = new CropCell(x, y, speciesList[UnityEngine.Random.Range(0, 3)]);
@@ -85,11 +87,12 @@ public class CropManager : MonoBehaviour
                 double plantChance = plantRandom.NextDouble();
                 if (plantChance < 0.3)
                 {
-                    Board[i, j].Plant(); //To do: Only generate crops with a 30% chance
+                    Board[i, j].Plant(); // To do: Only generate crops with a 30% chance
                 }
             }
         }
     }
+
     public void PlayerPlant(float playerX, float playerY)
     {
         for (int x = 0; x < BOARD_SIZE; x++)
@@ -171,7 +174,7 @@ public class CropManager : MonoBehaviour
     }
 
     public class CropCell
-    { //Planting a seed instantly makes the crop level 1
+    { // Planting a seed instantly makes the crop level 1
         private GameObject cropObject;
         public int sunLevel;
         public int waterLevel;
@@ -179,6 +182,7 @@ public class CropManager : MonoBehaviour
         public float yPos;
         public int growthLevel;
         private readonly string species;
+
         public CropCell(int xPos, int yPos, string species)
         {
             cropObject = null; // Null means no seed or plant there
@@ -289,23 +293,22 @@ public class CropManager : MonoBehaviour
             float realYPos = yPos;
             if (realXPos > 0)
             {
-                realXPos = (float)(realXPos - 0.5);
+                realXPos = (float)(realXPos - 0.5f);
             }
             else
             {
-                realXPos = (float)(realXPos + 0.5);
+                realXPos = (float)(realXPos + 0.5f);
             }
             if (realYPos > 0)
             {
-                realYPos = (float)(realYPos - 0.5);
+                realYPos = (float)(realYPos - 0.5f);
             }
             else
             {
-                realYPos = (float)(realYPos + 0.5);
+                realYPos = (float)(realYPos + 0.5f);
             }
             return (realXPos, realYPos);
         }
-
     }
 }
 
