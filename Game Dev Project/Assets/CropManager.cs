@@ -192,10 +192,51 @@ public class CropManager : MonoBehaviour
         return false;
     }
 
+    public int Harvest(int x, int y)
+    {
+        int index = x * BOARD_SIZE + y;
+        if (cropObjects[index] != null)
+        {
+            Destroy(cropObjects[index]);
+            int cropValue = growthLevels[index];
+            sunLevels[index] = 0;
+            waterLevels[index] = 0;
+            growthLevels[index] = 0;
+            return cropValue;
+        }
+        return -1;
+    }
+
    /* public (float xPos, float yPos) GetRealCoordinates(x, y)
    {
 
    }*/
+
+    public void SizeCheck(int x, int y)
+    {
+        int index = x * BOARD_SIZE + y;
+        if (cropObjects[index] == null)
+        {
+            return;
+        }
+
+        float[] sizeList = { 0.2f, 0.3f, 0.4f, 0.5f };
+        if ((sunLevels[index] >= 1) && (waterLevels[index] >= 1) && (growthLevels[index] < 1))
+        {
+            growthLevels[index] = 1;
+        }
+        if ((sunLevels[index] >= 3) && (waterLevels[index] >= 3) && (growthLevels[index] < 2))
+        {
+            growthLevels[index] = 2;
+        }
+        if ((sunLevels[index] >= 5) && (waterLevels[index] >= 5) && (growthLevels[index] < 3))
+        {
+            growthLevels[index] = 3;
+        }
+
+        float selectedSize = sizeList[growthLevels[index]];
+        cropObjects[index].transform.localScale = new Vector3(selectedSize, selectedSize, selectedSize);
+    }
 
     public void ResetCell(int x, int y)
     {
@@ -221,7 +262,7 @@ public class CropManager : MonoBehaviour
         int sunSpawnRate = 3;
         if (sunSpawnRate > UnityEngine.Random.Range(0, 10))
         {
-            sunLevels[index] = UnityEngine.Random.Range(1, 6);
+            sunLevels[index] = (byte)UnityEngine.Random.Range(1, 6);
         }
     }
 
@@ -246,6 +287,11 @@ public class CropManager : MonoBehaviour
                 cell.SpawnSun();
                 cell.SpawnWater();
                 cell.SizeCheck();
+
+                ResetSunLevel(x, y);
+                SpawnSun(x, y);
+                SpawnWater(x, y);
+                SizeCheck(x, y);
             }
         }
     }
