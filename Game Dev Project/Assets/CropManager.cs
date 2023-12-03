@@ -9,11 +9,24 @@ public class CropManager : MonoBehaviour
     private int totalPoints = 0;
     private readonly string[] speciesList = {"tomato", "corn", "melon"};
 
-    private static int totalBoardCells = BOARD_SIZE * BOARD_SIZE;
-    private CropCellStruct[] byteArray = new CropCellStruct[totalBoardCells];
+    private byte[] sunLevels;
+    private byte[] waterLevels;
+    private byte[] growthLevels;
+    private byte[] cropSpecies;
 
     private void Start()
-    { 
+    {        
+        for (int x = 0; x < BOARD_SIZE; x++) {
+            for (int y = 0; y < BOARD_SIZE; y++) {
+                int index = x * BOARD_SIZE + y;
+
+                // randomize cropSpecies here
+                sunLevels[index] = 0;
+                waterLevels[index] = 0;
+                growthLevels[index] = 0;
+            }
+        }
+
         Board = new CropCell[BOARD_SIZE, BOARD_SIZE]; //Each "cell"'s area/square is from index x to index x+1, and index y to index y+1
         int UNIT_TILE = BOARD_SIZE / 2;
         int FIRST_HALF_START = 0 - UNIT_TILE;
@@ -86,6 +99,30 @@ public class CropManager : MonoBehaviour
         }   
     }
 
+    public int GetSunLevel(int x, int y)
+    {
+        int index = x * BOARD_SIZE + y;
+        return sunLevels[index];
+    }
+
+    public int GetWaterLevel(int x, int y)
+    {
+        int index = x * BOARD_SIZE + y;
+        return waterLevels[index];
+    }
+
+    public int GetGrowthLevel(int x, int y)
+    {
+        int index = x * BOARD_SIZE + y;
+        return growthLevels[index];
+    }
+
+    public int GetSpecies(int x, int y)
+    {
+        int index = x * BOARD_SIZE + y;
+        return cropSpecies[index];
+    }
+
     public void TriggerTurn(){ //Once player does an action, this is triggered, should randomly add water or sun to cells or whatever
         for (int x = 0; x < BOARD_SIZE; x++) {
             for (int y = 0; y < BOARD_SIZE; y++) {
@@ -97,27 +134,7 @@ public class CropManager : MonoBehaviour
             }
         }
     }
-    public struct CropCellStruct
-    {
-        public CropCellStruct(float x, float y, string species)
-        {
-            this.cropObject = null;
-            this.xPos = x;
-            this.yPos = y;
-            this.species = species;
-            this.sunLevel = 0;
-            this.waterLevel = 0;
-            this.growthLevel = 0;
-        }
-
-        public GameObject cropObject {get;}
-        public float xPos {get;}
-        public float yPos {get;}
-        public string species {get;}
-        public int sunLevel {get;}
-        public int waterLevel {get;}
-        public int growthLevel {get;}
-    }
+    
     public class CropCell
     { //Planting a seed instantly makes the crop level 1
         private GameObject cropObject;
