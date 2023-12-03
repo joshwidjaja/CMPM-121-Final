@@ -16,6 +16,7 @@ public class CropManager : MonoBehaviour
 
     private void Start()
     {        
+        // new implementation
         for (int x = 0; x < BOARD_SIZE; x++) {
             for (int y = 0; y < BOARD_SIZE; y++) {
                 int index = x * BOARD_SIZE + y;
@@ -27,6 +28,7 @@ public class CropManager : MonoBehaviour
             }
         }
 
+        // current implementation
         Board = new CropCell[BOARD_SIZE, BOARD_SIZE]; //Each "cell"'s area/square is from index x to index x+1, and index y to index y+1
         int UNIT_TILE = BOARD_SIZE / 2;
         int FIRST_HALF_START = 0 - UNIT_TILE;
