@@ -16,8 +16,8 @@ public class CropManager : MonoBehaviour
     private byte[] growthLevels;
     private string[] cropSpecies;
     
-    private Stack<byte[]> undoArray;
-    private Stack<byte[]> redoArray;
+    private Stack<BoardState> undoStack;
+    private Stack<BoardState> redoStack;
 
     private void Start()
     {
@@ -219,11 +219,6 @@ public class CropManager : MonoBehaviour
         return -1;
     }
 
-   /* public (float xPos, float yPos) GetRealCoordinates(x, y)
-   {
-
-   }*/
-
     public void SizeCheck(int x, int y)
     {
         int index = x * BOARD_SIZE + y;
@@ -294,23 +289,43 @@ public class CropManager : MonoBehaviour
         {
             for (int y = 0; y < BOARD_SIZE; y++)
             {
-                /*CropCell cell = Board[x, y];
-                cell.ResetSunLevel();
-                cell.SpawnSun();
-                cell.SpawnWater();
-                cell.SizeCheck();*/
-
                 ResetSunLevel(x, y);
                 SpawnSun(x, y);
                 SpawnWater(x, y);
                 SizeCheck(x, y);
+                SaveBoardState();
             }
         }
     }
 
     public void SaveBoardState()
     {
-        
+        BoardState boardState = new BoardState(cropObjects, sunLevels, waterLevels, growthLevels, cropSpecies);
+        undoStack.Push(boardState);)
+    }
+
+    public void LoadBoardState(BoardState boardState)
+    {
+        for (int i = 0; i < totalCells; i++)
+        {
+            cropObjects[i] = boardState.cropObjects[i];
+            sunLevels[i] = boardState.sunLevels[i];
+            waterLevels[i] = boardState.waterLevels[i];
+            growthLevels[i] = boardState.growthLevels[i];
+            cropSpecies[i] = boardState.cropSpecies[i];
+        }
+    }
+
+    public void Undo()
+    {
+        redoStack.Push(undoStack.TryPop());
+        LoadBoardState(undoStack.TryPeek());
+    }
+
+    public void Redo()
+    {
+        undoStack.Push(redoStack.TryPop());
+        LoadBoardState(redoStack.TryPeek());
     }
 
     public (float xPos, float yPos) GetRealCoordinates(float xPos, float yPos)
@@ -342,142 +357,22 @@ public class CropManager : MonoBehaviour
             return (realXPos, realYPos);
     }
 
-    /*public class CropCell
-    { // Planting a seed instantly makes the crop level 1
-        private GameObject cropObject;
-        public int sunLevel;
-        public int waterLevel;
-        public float xPos;
-        public float yPos;
-        public int growthLevel;
-        private readonly string species;
+    public class BoardState
+    {
+        private GameObject[] cropObjects; // unsure if it will work
+        private byte[] sunLevels;
+        private byte[] waterLevels;
+        private byte[] growthLevels;
+        private string[] cropSpecies;
 
-        public CropCell(int xPos, int yPos, string species)
+        public BoardState(GameObject[] cropObject, byte[] sunLevel, byte[] waterLevel, byte[] growthLevel, string[] cropSpeciesList)
         {
-            cropObject = null; // Null means no seed or plant there
-            sunLevel = 0;
-            waterLevel = 0;
-            this.xPos = xPos;
-            this.yPos = yPos;
-            growthLevel = 0;
-            this.species = species;
+            cropObjects = cropObject;
+            sunLevels = sunLevel;
+            waterLevels = waterLevel;
+            growthLevels = growthLevel;
+            cropSpecies = cropSpeciesList;
         }
-        public void ResetCell()
-        {
-            sunLevel = 0;
-            waterLevel = 0;
-            if (cropObject != null)
-            {
-                Destroy(cropObject);
-            }
-        }
-        public void ResetSunLevel()
-        {
-            sunLevel--;
-            if (sunLevel < 0) sunLevel = 0;
-        }
-        public void SpawnSun()
-        {
-            int sunSpawnRate = 3;
-            if (sunSpawnRate > UnityEngine.Random.Range(0, 10))
-            {
-                sunLevel = UnityEngine.Random.Range(1, 6);
-            }
-
-        }
-        public void SpawnWater()
-        {
-            int waterSpawnRate = 3;
-            if (waterSpawnRate > UnityEngine.Random.Range(0, 10))
-            {
-                waterLevel++;
-            }
-        }
-        public bool Plant()
-        { // Was planting successful?
-            if (cropObject == null)
-            {
-                cropObject = GameObject.CreatePrimitive(PrimitiveType.Cube);//new GameObject("crop");
-                cropObject.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
-                //cropObject.transform.localScale = new Vector3(sizeList[this.growthLevel], sizeList[this.growthLevel], sizeList[this.growthLevel]);
-                (float newX, float newY) = GetRealCoordinates();
-                cropObject.transform.position = new Vector3(newX, 0.0f, newY);
-                Material myMaterial = new(Shader.Find("Standard"));
-                cropObject.GetComponent<Renderer>().material = myMaterial;
-                switch (species)
-                {
-                    case "tomato":
-                        myMaterial.color = Color.red;
-                        break;
-                    case "corn":
-                        myMaterial.color = Color.yellow;
-                        break;
-                    case "melon":
-                        myMaterial.color = Color.green;
-                        break;
-
-                }
-                return true;
-            }
-            return false;
-        }
-        public int Harvest()
-        {
-            if (cropObject != null)
-            {
-                Destroy(cropObject);
-                int tempGrowth = growthLevel;
-                growthLevel = 0;
-                sunLevel = 0;
-                waterLevel = 0;
-                return tempGrowth;
-            }
-            return -1;
-        }
-        public void SizeCheck()
-        {
-            if (cropObject == null)
-            {
-                return;
-            }
-            float[] sizeList = { 0.2f, 0.3f, 0.4f, 0.5f };
-            if ((sunLevel >= 1) && (waterLevel >= 1) && (growthLevel < 1))
-            {
-                growthLevel = 1;
-            }
-            if ((sunLevel >= 3) && (waterLevel >= 3) && (growthLevel < 2))
-            {
-                growthLevel = 2;
-            }
-            if ((sunLevel >= 5) && (waterLevel >= 5) && (growthLevel < 3))
-            {
-                growthLevel = 3;
-            }
-            cropObject.transform.localScale = new Vector3(sizeList[growthLevel], sizeList[growthLevel], sizeList[growthLevel]);
-
-        }
-        public (float xPos, float yPos) GetRealCoordinates()
-        {
-            float realXPos = xPos;
-            float realYPos = yPos;
-            if (realXPos > 0)
-            {
-                realXPos = (float)(realXPos - 0.5f);
-            }
-            else
-            {
-                realXPos = (float)(realXPos + 0.5f);
-            }
-            if (realYPos > 0)
-            {
-                realYPos = (float)(realYPos - 0.5f);
-            }
-            else
-            {
-                realYPos = (float)(realYPos + 0.5f);
-            }
-            return (realXPos, realYPos);
-        }
-    }*/
+    }
 }
 
