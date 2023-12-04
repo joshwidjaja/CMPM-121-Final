@@ -1,10 +1,11 @@
 using System;
+using System.Xml.Serialization;
 using UnityEngine;
 
 public class CropManager : MonoBehaviour
 {
     // Start is called before the first frame update
-    private CropCell[,] Board; //A 2d array where each row/column is the same size
+    //private CropCell[,] Board; //A 2d array where each row/column is the same size
     private int BOARD_SIZE = 10;
     private int totalPoints = 0;
     private readonly string[] speciesList = { "tomato", "corn", "melon" };
@@ -46,36 +47,44 @@ public class CropManager : MonoBehaviour
         }
 
         // current implementation
-        Board = new CropCell[BOARD_SIZE, BOARD_SIZE]; // Each "cell"'s area/square is from index x to index x+1, and index y to index y+1
+        /*Board = new CropCell[BOARD_SIZE, BOARD_SIZE]; // Each "cell"'s area/square is from index x to index x+1, and index y to index y+1
         int UNIT_TILE = BOARD_SIZE / 2;
         int FIRST_HALF_START = 0 - UNIT_TILE;
         int FIRST_HALF_END = 0;
 
         int SECOND_HALF_START = 1;
         int SECOND_HALF_END = UNIT_TILE + 1;
-
+        int cropSpeciesIndex = 0;
         for (int x = FIRST_HALF_START; x < FIRST_HALF_END; x++)
         { // Left half of board ex: -5 to 0(not inclusive)
             for (int y = FIRST_HALF_START; y < FIRST_HALF_END; y++)
             {
-                Board[x + UNIT_TILE, y + UNIT_TILE] = new CropCell(x, y, speciesList[UnityEngine.Random.Range(0, 3)]);
+                //Board[x + UNIT_TILE, y + UNIT_TILE] = new CropCell(x, y, speciesList[UnityEngine.Random.Range(0, 3)]);
+                Board[x + UNIT_TILE, y + UNIT_TILE] = new CropCell(x, y, cropSpecies[cropSpeciesIndex]);
+                cropSpeciesIndex++;
             }
             for (int y = SECOND_HALF_START; y < SECOND_HALF_END; y++)
             {
-                Board[x + UNIT_TILE, y + UNIT_TILE - 1] = new CropCell(x, y, speciesList[UnityEngine.Random.Range(0, 3)]);
+                //Board[x + UNIT_TILE, y + UNIT_TILE - 1] = new CropCell(x, y, speciesList[UnityEngine.Random.Range(0, 3)]);
+                Board[x + UNIT_TILE, y + UNIT_TILE] = new CropCell(x, y, cropSpecies[cropSpeciesIndex]);
+                cropSpeciesIndex++;
             }
         }
         for (int x = SECOND_HALF_START; x < SECOND_HALF_END; x++)
         { // Right half
             for (int y = FIRST_HALF_START; y < FIRST_HALF_END; y++)
             {
-                Board[x + UNIT_TILE - 1, y + UNIT_TILE] = new CropCell(x, y, speciesList[UnityEngine.Random.Range(0, 3)]);
+                //Board[x + UNIT_TILE - 1, y + UNIT_TILE] = new CropCell(x, y, speciesList[UnityEngine.Random.Range(0, 3)]);
+                Board[x + UNIT_TILE, y + UNIT_TILE] = new CropCell(x, y, cropSpecies[cropSpeciesIndex]);
+                cropSpeciesIndex++;
             }
             for (int y = SECOND_HALF_START; y < SECOND_HALF_END; y++)
             {
-                Board[x + UNIT_TILE - 1, y + UNIT_TILE - 1] = new CropCell(x, y, speciesList[UnityEngine.Random.Range(0, 3)]);
+                //Board[x + UNIT_TILE - 1, y + UNIT_TILE - 1] = new CropCell(x, y, speciesList[UnityEngine.Random.Range(0, 3)]);
+                Board[x + UNIT_TILE, y + UNIT_TILE] = new CropCell(x, y, cropSpecies[cropSpeciesIndex]);
+                cropSpeciesIndex++;
             }
-        }
+        }*/
         RegenerateBoard();
     }
 
@@ -90,7 +99,7 @@ public class CropManager : MonoBehaviour
                 double plantChance = plantRandom.NextDouble();
                 if (plantChance < 0.3)
                 {
-                    Board[i, j].Plant(); //To do: Only generate crops with a 30% chance
+                    //Board[i, j].Plant(); 
                     Plant(i, j);
                 }
             }
@@ -103,11 +112,11 @@ public class CropManager : MonoBehaviour
         {
             for (int y = 0; y < BOARD_SIZE; y++)
             {
-                CropCell cell = Board[x, y];
-                (float realX, float realY) = cell.GetRealCoordinates();
+                //CropCell cell = Board[x, y];
+                (float realX, float realY) = GetRealCoordinates(x, y);
                 if ((Math.Abs(realX - playerX) < 1) && (Math.Abs(realY - playerY) < 1))
                 {
-                    bool result = Board[x, y].Plant();
+                    bool result = Plant(x, y);
                     if (result) return;
                 }
             }
@@ -119,11 +128,11 @@ public class CropManager : MonoBehaviour
         {
             for (int y = 0; y < BOARD_SIZE; y++)
             {
-                CropCell cell = Board[x, y];
-                (float realX, float realY) = cell.GetRealCoordinates();
+                //CropCell cell = Board[x, y];
+                (float realX, float realY) = GetRealCoordinates(x, y);
                 if ((Math.Abs(realX - playerX) < 1) && (Math.Abs(realY - playerY) < 1))
                 {
-                    int result = Board[x, y].Harvest();
+                    int result = Harvest(x, y);
                     if (result != (-1))
                     {
                         totalPoints += result;
@@ -170,7 +179,7 @@ public class CropManager : MonoBehaviour
             cropObjects[index] = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cropObjects[index].transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
             // NEEDS TO BE REWRITTEN
-            (float newX, float newY) = GetRealCoordinates();
+            (float newX, float newY) = GetRealCoordinates(x, y);
             cropObjects[index].transform.position = new Vector3(newX, 0.0f, newY);
             //
             Material myMaterial = new(Shader.Find("Standard"));
@@ -282,11 +291,11 @@ public class CropManager : MonoBehaviour
         {
             for (int y = 0; y < BOARD_SIZE; y++)
             {
-                CropCell cell = Board[x, y];
+                /*CropCell cell = Board[x, y];
                 cell.ResetSunLevel();
                 cell.SpawnSun();
                 cell.SpawnWater();
-                cell.SizeCheck();
+                cell.SizeCheck();*/
 
                 ResetSunLevel(x, y);
                 SpawnSun(x, y);
@@ -295,8 +304,36 @@ public class CropManager : MonoBehaviour
             }
         }
     }
+    public (float xPos, float yPos) GetRealCoordinates(float xPos, float yPos)
+    {
+            float realXPos = xPos -  (BOARD_SIZE/2);
+            float realYPos = yPos - (BOARD_SIZE/2);
+            if(realXPos > (-1)){
+                realXPos++;
+            }
+            if(realYPos > (-1)){
+                realYPos++;
+            }
+            if (realXPos > 0)
+            {
+                realXPos = (float)(realXPos - 0.5f);
+            }
+            else
+            {
+                realXPos = (float)(realXPos + 0.5f);
+            }
+            if (realYPos > 0)
+            {
+                realYPos = (float)(realYPos - 0.5f);
+            }
+            else
+            {
+                realYPos = (float)(realYPos + 0.5f);
+            }
+            return (realXPos, realYPos);
+    }
 
-    public class CropCell
+    /*public class CropCell
     { // Planting a seed instantly makes the crop level 1
         private GameObject cropObject;
         public int sunLevel;
@@ -432,6 +469,6 @@ public class CropManager : MonoBehaviour
             }
             return (realXPos, realYPos);
         }
-    }
+    }*/
 }
 
