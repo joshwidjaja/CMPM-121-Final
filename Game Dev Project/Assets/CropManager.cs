@@ -15,6 +15,9 @@ public class CropManager : MonoBehaviour
     private byte[] waterLevels;
     private byte[] growthLevels;
     private string[] cropSpecies;
+    
+    private Stack<byte[]> undoArray;
+    private Stack<byte[]> redoArray;
 
     private void Start()
     {
@@ -304,6 +307,12 @@ public class CropManager : MonoBehaviour
             }
         }
     }
+
+    public void SaveBoardState()
+    {
+        
+    }
+
     public (float xPos, float yPos) GetRealCoordinates(float xPos, float yPos)
     {
             float realXPos = xPos -  (BOARD_SIZE/2);
