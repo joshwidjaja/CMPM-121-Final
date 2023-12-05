@@ -80,7 +80,7 @@ public class CropManager : MonoBehaviour
                 if ((Math.Abs(realX - playerX) < 1) && (Math.Abs(realY - playerY) < 1))
                 {
                     bool result = Plant(x, y);
-                    if (result) return;
+                    return result;
                 }
             }
         }
