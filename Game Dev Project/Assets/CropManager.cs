@@ -30,17 +30,19 @@ public class CropManager : MonoBehaviour
 
         // Arrays to store sun, water, growth levels, and crop species for each cell
         string filePath = Directory.GetCurrentDirectory() + @"\data.txt";
-        if(File.Exists(filePath)){
+        if (File.Exists(filePath))
+        {
             dataFile = File.Open(filePath, FileMode.Open);
             Debug.Log("EXISTS");
             dataFile.Close();
         }
-        else{
+        else
+        {
             dataFile = File.Create(filePath);
             dataFile.Close();
-             sw = new StreamWriter(filePath);
+            sw = new StreamWriter(filePath);
 
-             sw.Close();
+            sw.Close();
 
         }
         player = GameObject.Find("Player");
@@ -60,7 +62,7 @@ public class CropManager : MonoBehaviour
                 int index = x * BOARD_SIZE + y;
 
                 cropObjects[index] = null;
-                cropSpecies[index] = speciesList[UnityEngine.Random.Range(0,3)];
+                cropSpecies[index] = speciesList[UnityEngine.Random.Range(0, 3)];
                 sunLevels[index] = 0;
                 waterLevels[index] = 0;
                 growthLevels[index] = 0;
@@ -257,7 +259,7 @@ public class CropManager : MonoBehaviour
             waterLevels[index]++;
         }
     }
-    
+
     public void TriggerTurn()
     { //Once player does an action, this is triggered, should randomly add water or sun to cells or whatever
         for (int x = 0; x < BOARD_SIZE; x++)
@@ -268,7 +270,7 @@ public class CropManager : MonoBehaviour
                 SpawnSun(x, y);
                 SpawnWater(x, y);
                 SizeCheck(x, y);
-                
+
             }
         }
         SaveBoardState();
@@ -297,7 +299,7 @@ public class CropManager : MonoBehaviour
             for (int y = 0; y < BOARD_SIZE; y++)
             {
                 SizeCheck(x, y);
-                
+
             }
         }
     }
@@ -310,7 +312,7 @@ public class CropManager : MonoBehaviour
             return;
         }
         redoStack.Push(undoStack.Pop());
-        LoadBoardState(undoStack.Peek());       
+        LoadBoardState(undoStack.Peek());
     }
 
     public void Redo()
@@ -327,31 +329,33 @@ public class CropManager : MonoBehaviour
 
     public (float xPos, float yPos) GetRealCoordinates(float xPos, float yPos)
     {
-            float realXPos = xPos -  (BOARD_SIZE/2);
-            float realYPos = yPos - (BOARD_SIZE/2);
-            if(realXPos > (-1)){
-                realXPos++;
-            }
-            if(realYPos > (-1)){
-                realYPos++;
-            }
-            if (realXPos > 0)
-            {
-                realXPos = (float)(realXPos - 0.5f);
-            }
-            else
-            {
-                realXPos = (float)(realXPos + 0.5f);
-            }
-            if (realYPos > 0)
-            {
-                realYPos = (float)(realYPos - 0.5f);
-            }
-            else
-            {
-                realYPos = (float)(realYPos + 0.5f);
-            }
-            return (realXPos, realYPos);
+        float realXPos = xPos - (BOARD_SIZE / 2);
+        float realYPos = yPos - (BOARD_SIZE / 2);
+        if (realXPos > (-1))
+        {
+            realXPos++;
+        }
+        if (realYPos > (-1))
+        {
+            realYPos++;
+        }
+        if (realXPos > 0)
+        {
+            realXPos = (float)(realXPos - 0.5f);
+        }
+        else
+        {
+            realXPos = (float)(realXPos + 0.5f);
+        }
+        if (realYPos > 0)
+        {
+            realYPos = (float)(realYPos - 0.5f);
+        }
+        else
+        {
+            realYPos = (float)(realYPos + 0.5f);
+        }
+        return (realXPos, realYPos);
     }
 
     public class BoardState
@@ -365,13 +369,14 @@ public class CropManager : MonoBehaviour
         public int totalPoints;
         public BoardState(GameObject[] cropObject, byte[] sunLevel, byte[] waterLevel, byte[] growthLevel, string[] cropSpeciesList, Vector3 playerPosition, int totalPoints)
         {
-                this.cropObjects = new GameObject[sunLevel.Length];
-                this.sunLevels  = new byte[sunLevel.Length];
-                this.waterLevels= new byte[sunLevel.Length];
-                this.growthLevels = new byte[sunLevel.Length];
-                this.cropSpecies = new string[sunLevel.Length];
-                this.playerPosition = new Vector3();
-            for(int i = 0; i < sunLevel.Length; i++){
+            this.cropObjects = new GameObject[sunLevel.Length];
+            this.sunLevels = new byte[sunLevel.Length];
+            this.waterLevels = new byte[sunLevel.Length];
+            this.growthLevels = new byte[sunLevel.Length];
+            this.cropSpecies = new string[sunLevel.Length];
+            this.playerPosition = new Vector3();
+            for (int i = 0; i < sunLevel.Length; i++)
+            {
                 this.cropObjects[i] = cropObject[i];
                 this.sunLevels[i] = sunLevel[i];
                 this.waterLevels[i] = waterLevel[i];
@@ -383,7 +388,7 @@ public class CropManager : MonoBehaviour
             this.playerPosition.z = playerPosition.z;
             this.totalPoints = totalPoints;
 
-            
+
         }
     }
 }
