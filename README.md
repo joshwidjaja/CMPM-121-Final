@@ -53,13 +53,20 @@ Looking back on how you achieved the F0 requirements, how has your team’s plan
 Initially we were thinking of having copies of the crops in the scene view. However, since an announcement was made not wanting us to use the scene view at all, we realized we had to make some changes in our plan. So instead of using the scene view, we decided to make the crops colored cubes for now. This allows us to easily create the crops in code without having to apply some mesh to them. The setup of having a crop manager and a crop cell class and their roles have also changed over time. Originally there was no crop cell class.
 
 # Devlog Entry F1 - 05 December 2023
-[F0.a]
-[F0.b] 
-[F0.c]
-[F0.d]
-[F0.e]
-[F0.f]
-[F0.g]
+## How we satisfied the software requirements
+[F0.a] Same as last week
+
+[F0.b] Same as last week
+
+[F0.c] The implementation for reap and sow mostly remains the same, in which a plant is placed based on the players coordinates and a plant is destroyed upon being harvested. In this version, plants are now being created and stored into an array by indexing into an array and setting its value respectively. When harvesting, this version will now destroy the object at a specific index of an array, while also resetting the sun, water, and growth levels.
+
+[F0.d] This implementation is the same as last week, with a minor change now being the new values for sun and water levels are stored in an array based on the location of a cell.
+
+[F0.e] Same as last week
+
+[F0.f] This implementation is the same as last week, with a minor change now being the growth levels are stored and modified through an array.
+
+[F0.g] Same as last week
 
 [F1.a] The important state of each cell of your game’s grid must be backed by a single contiguous byte array in AoS or SoA format. Your team must statically allocate memory usage for the whole grid.
 
