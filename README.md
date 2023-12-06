@@ -1,4 +1,4 @@
-# Devlog Entry - 20 November 2023
+# Devlog Entry F0 - 20 November 2023
 ## Introducing the Team
 Tools Lead: Joshua Widjaja
 
@@ -47,6 +47,20 @@ If the sun and water level exceeds a certain value, the crop's growth level will
 A play scenario is completed when some condition is satisfied (e.g. at least X plants at growth level Y or above).
 Based on the crop level being harvested, that crop level number is added to a total points. Since crops you plant start at level 0, if you harvest an "unleveled" one you get 0 points. If the points exceeds 10, you get a message in the console saying "You Win!".
 
+## Reflection
+Looking back on how you achieved the F0 requirements, how has your team’s plan changed? Did you reconsider any of the choices you previously described for Tools and Materials or your Roles? It would be very suspicious if you didn’t need to change anything. There’s learning value in you documenting how your team’s thinking has changed over time.
+
+Initially we were thinking of having copies of the crops in the scene view. However, since an announcement was made not wanting us to use the scene view at all, we realized we had to make some changes in our plan. So instead of using the scene view, we decided to make the crops colored cubes for now. This allows us to easily create the crops in code without having to apply some mesh to them. The setup of having a crop manager and a crop cell class and their roles have also changed over time. Originally there was no crop cell class.
+
+# Devlog Entry F1 - 05 December 2023
+[F0.a]
+[F0.b] 
+[F0.c]
+[F0.d]
+[F0.e]
+[F0.f]
+[F0.g]
+
 [F1.a] The important state of each cell of your game’s grid must be backed by a single contiguous byte array in AoS or SoA format. Your team must statically allocate memory usage for the whole grid.
 
 [F1.b] The player must be able to undo every major choice (all the way back to the start of play), even from a saved game. They should be able to redo (undo of undo operations) multiple times.
@@ -56,7 +70,4 @@ Based on the crop level being harvested, that crop level number is added to a to
 [F1.d] The game must implement an implicit auto-save system to support recovery from unexpected quits. (For example, when the game is launched, if an auto-save entry is present, the game might ask the player "do you want to continue where you left off?" The auto-save entry might or might not be visible among the list of manual save entries available for the player to load as part of F1.c.)
 
 ## Reflection
-Looking back on how you achieved the F0 requirements, how has your team’s plan changed? Did you reconsider any of the choices you previously described for Tools and Materials or your Roles? It would be very suspicious if you didn’t need to change anything. There’s learning value in you documenting how your team’s thinking has changed over time.
-Initially we were thinking of having copies of the crops in the scene view. However, since an announcement was made not wanting us to use the scene view at all, we realized we had to make some changes in our plan. So instead of using the scene view, we decided to make the crops colored cubes for now. This allows us to easily create the crops in code without having to apply some mesh to them. The setup of having a crop manager and a crop cell class and their roles have also changed over time. Originally there was no crop cell class.
-
 Looking back on how you achieved the new F1 requirements, how has your team’s plan changed? Did you reconsider any of the choices you previously described for Tools and Materials or your Roles? Has your game design evolved now that you've started to think about giving the player more feedback? It would be very suspicious if you didn’t need to change anything. There’s learning value in you documenting how your team’s thinking has changed over time.
