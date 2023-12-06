@@ -56,6 +56,14 @@ public class PlayerController : MonoBehaviour
                 jumpState = JumpButtonState.down;
             }
         }
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            cropManager.Undo();
+        }
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            cropManager.Redo();
+        }
         if (Input.GetKeyUp(KeyCode.Z) || Input.GetKeyUp(KeyCode.X))
         {
             jumpState = JumpButtonState.up;
