@@ -79,8 +79,7 @@ public class CropManager : MonoBehaviour
                 (float realX, float realY) = GetRealCoordinates(x, y);
                 if ((Math.Abs(realX - playerX) < 1) && (Math.Abs(realY - playerY) < 1))
                 {
-                    bool result = Plant(x, y);
-                    return result;
+                    return Plant(x, y);
                 }
             }
         }
