@@ -73,9 +73,5 @@ public class PlayerController : MonoBehaviour
             jumpState = JumpButtonState.up;
             cropManager.TriggerTurn();
         }
-        /*if (Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.DownArrow) || Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.RightArrow))
-        {
-            cropManager.TriggerTurn();
-        }*/
     }
 }

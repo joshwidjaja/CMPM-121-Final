@@ -9,7 +9,6 @@ using UnityEngine;
 public class CropManager : MonoBehaviour
 {
     // Start is called before the first frame update
-    //private CropCell[,] Board; //A 2d array where each row/column is the same size
     private static int BOARD_SIZE = 10;
     private int totalPoints = 0;
     private readonly string[] speciesList = { "tomato", "corn", "melon" };
@@ -41,7 +40,6 @@ public class CropManager : MonoBehaviour
             dataFile.Close();
              sw = new StreamWriter(filePath);
 
-             //sw.WriteLine(JsonSerializer.ToJsonString(1));
              sw.Close();
 
         }
@@ -84,7 +82,6 @@ public class CropManager : MonoBehaviour
                 double plantChance = plantRandom.NextDouble();
                 if (plantChance < 0.3)
                 {
-                    //Board[i, j].Plant(); 
                     Plant(i, j);
                 }
             }
@@ -97,7 +94,6 @@ public class CropManager : MonoBehaviour
         {
             for (int y = 0; y < BOARD_SIZE; y++)
             {
-                //CropCell cell = Board[x, y];
                 (float realX, float realY) = GetRealCoordinates(x, y);
                 if ((Math.Abs(realX - playerX) < 1) && (Math.Abs(realY - playerY) < 1))
                 {
@@ -113,7 +109,6 @@ public class CropManager : MonoBehaviour
         {
             for (int y = 0; y < BOARD_SIZE; y++)
             {
-                //CropCell cell = Board[x, y];
                 (float realX, float realY) = GetRealCoordinates(x, y);
                 if ((Math.Abs(realX - playerX) < 1) && (Math.Abs(realY - playerY) < 1))
                 {
@@ -163,10 +158,8 @@ public class CropManager : MonoBehaviour
         {
             cropObjects[index] = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cropObjects[index].transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
-            // NEEDS TO BE REWRITTEN
             (float newX, float newY) = GetRealCoordinates(x, y);
             cropObjects[index].transform.position = new Vector3(newX, 0.0f, newY);
-            //
             Material myMaterial = new(Shader.Find("Standard"));
             cropObjects[index].GetComponent<Renderer>().material = myMaterial;
             switch (cropSpecies[index])
@@ -329,7 +322,6 @@ public class CropManager : MonoBehaviour
         }
 
         undoStack.Push(redoStack.Pop());
-        //LoadBoardState(redoStack.Peek());
         LoadBoardState(undoStack.Peek());
     }
 
