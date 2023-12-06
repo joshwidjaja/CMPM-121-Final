@@ -26,18 +26,22 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             transform.Translate(Vector3.forward);
+            cropManager.TriggerTurn();
         }
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             transform.Translate(Vector3.back);
+            cropManager.TriggerTurn();
         }
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             transform.Translate(Vector3.left);
+            cropManager.TriggerTurn();
         }
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             transform.Translate(Vector3.right);
+            cropManager.TriggerTurn();
         }
         if (Input.GetKeyDown(KeyCode.Z))
         {
@@ -69,9 +73,9 @@ public class PlayerController : MonoBehaviour
             jumpState = JumpButtonState.up;
             cropManager.TriggerTurn();
         }
-        if (Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.DownArrow) || Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.RightArrow))
+        /*if (Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.DownArrow) || Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.RightArrow))
         {
             cropManager.TriggerTurn();
-        }
+        }*/
     }
 }
