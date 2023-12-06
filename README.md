@@ -69,8 +69,13 @@ Initially we were thinking of having copies of the crops in the scene view. Howe
 [F0.g] Same as last week
 
 [F1.a] The important state of each cell of your game’s grid must be backed by a single contiguous byte array in AoS or SoA format. Your team must statically allocate memory usage for the whole grid.
+In our implementation, this version of the game utilizes the SoA format to allocate memory usage into a byte array. Inside a structure to represent the grid space, known as CropManager, there are three byte arrays, whose indices connect to each individual cell of the game space. These byte arrays represent the sun levels, water levels, and growth levels.
+
+![F1.a data structure diagram](./f1_a_diagram.png)
 
 [F1.b] The player must be able to undo every major choice (all the way back to the start of play), even from a saved game. They should be able to redo (undo of undo operations) multiple times.
+Our game’s implementation allows you to undo and redo using the keyboard inputs. The code detects which key is being pressed down by firing a keydown event and storing that input. Therefore, when the player presses down on the q key, they are able to undo their previous actions and when the player presses down on the w key they are able to redo what they last undid. When undoing and redoing, the saved board states (including the crop objects, sun levels, water levels, growth levels, and the crop species) are being pushed off of one stack and popped onto the corresponding stack.
+
 
 [F1.c] The player must be able to manually save their progress in the game in a way that allows them to load that save and continue play another day. The player must be able to manage multiple save files (allowing save scumming).
 
