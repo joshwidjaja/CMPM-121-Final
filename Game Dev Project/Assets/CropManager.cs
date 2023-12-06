@@ -33,6 +33,9 @@ public class CropManager : MonoBehaviour
         growthLevels = new byte[totalCells];
         cropSpecies = new string[totalCells];
 
+        undoStack = new Stack<BoardState>();
+        redoStack = new Stack<BoardState>();
+
         // new implementation
         for (int x = 0; x < BOARD_SIZE; x++)
         {
@@ -253,15 +256,18 @@ public class CropManager : MonoBehaviour
                 SpawnSun(x, y);
                 SpawnWater(x, y);
                 SizeCheck(x, y);
-                SaveBoardState();
             }
         }
+        SaveBoardState();
     }
 
     public void SaveBoardState()
     {
         BoardState boardState = new BoardState(cropObjects, sunLevels, waterLevels, growthLevels, cropSpecies);
         undoStack.Push(boardState);
+        Debug.Log(boardState);
+        Debug.Log(undoStack.Count);
+        Debug.Log(redoStack.Count);
     }
 
     public void LoadBoardState(BoardState boardState)
@@ -273,6 +279,7 @@ public class CropManager : MonoBehaviour
             waterLevels[i] = boardState.waterLevels[i];
             growthLevels[i] = boardState.growthLevels[i];
             cropSpecies[i] = boardState.cropSpecies[i];
+            SizeCheck(i / BOARD_SIZE, i % BOARD_SIZE);
         }
     }
 
@@ -285,6 +292,12 @@ public class CropManager : MonoBehaviour
         }
 
         redoStack.Push(undoStack.Pop());
+
+        if (undoStack.Count <= 0)
+        {
+            Debug.Log("Reached Undo limit");
+            return;
+        }
         LoadBoardState(undoStack.Peek());
     }
 
@@ -297,6 +310,12 @@ public class CropManager : MonoBehaviour
         }
 
         undoStack.Push(redoStack.Pop());
+
+        if (redoStack.Count <= 0)
+        {
+            Debug.Log("Reached Redo limit");
+            return;
+        }
         LoadBoardState(redoStack.Peek());
     }
 
