@@ -31,20 +31,15 @@ public class CropManager : MonoBehaviour
 
         // Arrays to store sun, water, growth levels, and crop species for each cell
         string filePath = Directory.GetCurrentDirectory() + @"\data.txt";
-        if(File.Exists(filePath)){
-            dataFile = File.Open(filePath, FileMode.Open);
-            Debug.Log("EXISTS");
-            dataFile.Close();
-        }
-        else{
+        /*else{
             dataFile = File.Create(filePath);
             dataFile.Close();
-             sw = new StreamWriter(filePath);
+             //sw = new StreamWriter(filePath);
 
              //sw.WriteLine(JsonSerializer.ToJsonString(1));
-             sw.Close();
+             //sw.Close();
 
-        }
+        }*/
         player = GameObject.Find("Player");
         undoStack = new Stack<BoardState>();
         redoStack = new Stack<BoardState>();
@@ -68,7 +63,43 @@ public class CropManager : MonoBehaviour
                 growthLevels[index] = 0;
             }
         }
+        if(File.Exists(filePath)){
+            //dataFile = File.Open(filePath, FileMode.Open);
+            //dataFile.Close();
+            StreamReader sr = new StreamReader(filePath);
+            string line = sr.ReadLine();
+            while(line != null){
+                string[] parsed = line.Split(' ');
+                if(parsed.Contains("cell:"))
+            {
+                    int tempIndex = Array.IndexOf(parsed, "cell:");
+                    int lineX =  Int32.Parse(parsed[tempIndex + 1]);
+                    int lineY =  Int32.Parse(parsed[tempIndex + 2]);
+                    int arrIndex = (lineX * BOARD_SIZE) + lineY;
+                    if(parsed.Contains("sun:")){
+                        sunLevels[arrIndex] = (byte) Int32.Parse(parsed[Array.IndexOf(parsed, "sun:") + 1]);
+                    }
+                    if(parsed.Contains("water:")){
+                        waterLevels[arrIndex] = (byte) Int32.Parse(parsed[Array.IndexOf(parsed, "water:") + 1]);
+                    }
+                    if(parsed.Contains("growth:")){
+                        growthLevels[arrIndex] = (byte) Int32.Parse(parsed[Array.IndexOf(parsed, "growth:") + 1]);
+                    }
+                    if(parsed.Contains("species:")){
+                        cropSpecies[arrIndex] = parsed[Array.IndexOf(parsed, "species:") + 1];
+                    }
+            }
+           /* else if(){//If parsed.Contains("waterrate:") then set the water rate accordingly 
 
+
+            }
+            else if(){//If parsed.Contains("winpoints:") etc, there should only be if/else if, no ELSE because the else is just going to the next line at the end of (line != null) loop
+
+            }*/
+                line = sr.ReadLine();
+            }
+            sr.Close();
+        }
         RegenerateBoard();
         SaveBoardState();
     }
