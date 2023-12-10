@@ -25,21 +25,15 @@ public class CropManager : MonoBehaviour
     int totalCells = BOARD_SIZE * BOARD_SIZE;
     FileStream dataFile;
     StreamWriter sw;
+
+    public PlantDefinitionLanguage plantDefinitionLanguage;
     private void Start()
     {
         // Calculate total number of cells in the crop field
 
         // Arrays to store sun, water, growth levels, and crop species for each cell
         string filePath = Directory.GetCurrentDirectory() + @"\data.txt";
-        /*else{
-            dataFile = File.Create(filePath);
-            dataFile.Close();
-             //sw = new StreamWriter(filePath);
 
-             //sw.WriteLine(JsonSerializer.ToJsonString(1));
-             //sw.Close();
-
-        }*/
         player = GameObject.Find("Player");
         undoStack = new Stack<BoardState>();
         redoStack = new Stack<BoardState>();
@@ -57,45 +51,51 @@ public class CropManager : MonoBehaviour
                 int index = x * BOARD_SIZE + y;
 
                 cropObjects[index] = null;
-                cropSpecies[index] = speciesList[UnityEngine.Random.Range(0,3)];
+                cropSpecies[index] = speciesList[UnityEngine.Random.Range(0, 3)];
                 sunLevels[index] = 0;
                 waterLevels[index] = 0;
                 growthLevels[index] = 0;
             }
         }
-        if(File.Exists(filePath)){
+        if (File.Exists(filePath))
+        {
             //dataFile = File.Open(filePath, FileMode.Open);
             //dataFile.Close();
             StreamReader sr = new StreamReader(filePath);
             string line = sr.ReadLine();
-            while(line != null){
-                string[] parsed = line.Split(' ');
-                if(parsed.Contains("cell:"))
+            while (line != null)
             {
+                string[] parsed = line.Split(' ');
+                if (parsed.Contains("cell:"))
+                {
                     int tempIndex = Array.IndexOf(parsed, "cell:");
-                    int lineX =  Int32.Parse(parsed[tempIndex + 1]);
-                    int lineY =  Int32.Parse(parsed[tempIndex + 2]);
+                    int lineX = Int32.Parse(parsed[tempIndex + 1]);
+                    int lineY = Int32.Parse(parsed[tempIndex + 2]);
                     int arrIndex = (lineX * BOARD_SIZE) + lineY;
-                    if(parsed.Contains("sun:")){
-                        sunLevels[arrIndex] = (byte) Int32.Parse(parsed[Array.IndexOf(parsed, "sun:") + 1]);
+                    if (parsed.Contains("sun:"))
+                    {
+                        sunLevels[arrIndex] = (byte)Int32.Parse(parsed[Array.IndexOf(parsed, "sun:") + 1]);
                     }
-                    if(parsed.Contains("water:")){
-                        waterLevels[arrIndex] = (byte) Int32.Parse(parsed[Array.IndexOf(parsed, "water:") + 1]);
+                    if (parsed.Contains("water:"))
+                    {
+                        waterLevels[arrIndex] = (byte)Int32.Parse(parsed[Array.IndexOf(parsed, "water:") + 1]);
                     }
-                    if(parsed.Contains("growth:")){
-                        growthLevels[arrIndex] = (byte) Int32.Parse(parsed[Array.IndexOf(parsed, "growth:") + 1]);
+                    if (parsed.Contains("growth:"))
+                    {
+                        growthLevels[arrIndex] = (byte)Int32.Parse(parsed[Array.IndexOf(parsed, "growth:") + 1]);
                     }
-                    if(parsed.Contains("species:")){
+                    if (parsed.Contains("species:"))
+                    {
                         cropSpecies[arrIndex] = parsed[Array.IndexOf(parsed, "species:") + 1];
                     }
-            }
-           /* else if(){//If parsed.Contains("waterrate:") then set the water rate accordingly 
+                }
+                /* else if(){//If parsed.Contains("waterrate:") then set the water rate accordingly 
 
 
-            }
-            else if(){//If parsed.Contains("winpoints:") etc, there should only be if/else if, no ELSE because the else is just going to the next line at the end of (line != null) loop
+                 }
+                 else if(){//If parsed.Contains("winpoints:") etc, there should only be if/else if, no ELSE because the else is just going to the next line at the end of (line != null) loop
 
-            }*/
+                 }*/
                 line = sr.ReadLine();
             }
             sr.Close();
@@ -295,7 +295,7 @@ public class CropManager : MonoBehaviour
             waterLevels[index]++;
         }
     }
-    
+
     public void TriggerTurn()
     { //Once player does an action, this is triggered, should randomly add water or sun to cells or whatever
         for (int x = 0; x < BOARD_SIZE; x++)
@@ -306,7 +306,7 @@ public class CropManager : MonoBehaviour
                 SpawnSun(x, y);
                 SpawnWater(x, y);
                 SizeCheck(x, y);
-                
+
             }
         }
         SaveBoardState();
@@ -335,7 +335,7 @@ public class CropManager : MonoBehaviour
             for (int y = 0; y < BOARD_SIZE; y++)
             {
                 SizeCheck(x, y);
-                
+
             }
         }
     }
@@ -348,7 +348,7 @@ public class CropManager : MonoBehaviour
             return;
         }
         redoStack.Push(undoStack.Pop());
-        LoadBoardState(undoStack.Peek());       
+        LoadBoardState(undoStack.Peek());
     }
 
     public void Redo()
@@ -366,31 +366,33 @@ public class CropManager : MonoBehaviour
 
     public (float xPos, float yPos) GetRealCoordinates(float xPos, float yPos)
     {
-            float realXPos = xPos -  (BOARD_SIZE/2);
-            float realYPos = yPos - (BOARD_SIZE/2);
-            if(realXPos > (-1)){
-                realXPos++;
-            }
-            if(realYPos > (-1)){
-                realYPos++;
-            }
-            if (realXPos > 0)
-            {
-                realXPos = (float)(realXPos - 0.5f);
-            }
-            else
-            {
-                realXPos = (float)(realXPos + 0.5f);
-            }
-            if (realYPos > 0)
-            {
-                realYPos = (float)(realYPos - 0.5f);
-            }
-            else
-            {
-                realYPos = (float)(realYPos + 0.5f);
-            }
-            return (realXPos, realYPos);
+        float realXPos = xPos - (BOARD_SIZE / 2);
+        float realYPos = yPos - (BOARD_SIZE / 2);
+        if (realXPos > (-1))
+        {
+            realXPos++;
+        }
+        if (realYPos > (-1))
+        {
+            realYPos++;
+        }
+        if (realXPos > 0)
+        {
+            realXPos = (float)(realXPos - 0.5f);
+        }
+        else
+        {
+            realXPos = (float)(realXPos + 0.5f);
+        }
+        if (realYPos > 0)
+        {
+            realYPos = (float)(realYPos - 0.5f);
+        }
+        else
+        {
+            realYPos = (float)(realYPos + 0.5f);
+        }
+        return (realXPos, realYPos);
     }
 
     public class BoardState
@@ -404,13 +406,14 @@ public class CropManager : MonoBehaviour
         public int totalPoints;
         public BoardState(GameObject[] cropObject, byte[] sunLevel, byte[] waterLevel, byte[] growthLevel, string[] cropSpeciesList, Vector3 playerPosition, int totalPoints)
         {
-                this.cropObjects = new GameObject[sunLevel.Length];
-                this.sunLevels  = new byte[sunLevel.Length];
-                this.waterLevels= new byte[sunLevel.Length];
-                this.growthLevels = new byte[sunLevel.Length];
-                this.cropSpecies = new string[sunLevel.Length];
-                this.playerPosition = new Vector3();
-            for(int i = 0; i < sunLevel.Length; i++){
+            this.cropObjects = new GameObject[sunLevel.Length];
+            this.sunLevels = new byte[sunLevel.Length];
+            this.waterLevels = new byte[sunLevel.Length];
+            this.growthLevels = new byte[sunLevel.Length];
+            this.cropSpecies = new string[sunLevel.Length];
+            this.playerPosition = new Vector3();
+            for (int i = 0; i < sunLevel.Length; i++)
+            {
                 this.cropObjects[i] = cropObject[i];
                 this.sunLevels[i] = sunLevel[i];
                 this.waterLevels[i] = waterLevel[i];
@@ -422,7 +425,7 @@ public class CropManager : MonoBehaviour
             this.playerPosition.z = playerPosition.z;
             this.totalPoints = totalPoints;
 
-            
+
         }
     }
 }
