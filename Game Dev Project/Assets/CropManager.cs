@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Globalization;
 using System.Xml.Serialization;
 using Palmmedia.ReportGenerator.Core.Common;
 using UnityEngine;
@@ -12,13 +13,15 @@ public class CropManager : MonoBehaviour
     //private CropCell[,] Board; //A 2d array where each row/column is the same size
     private static int BOARD_SIZE = 10;
     private int totalPoints = 0;
-    private readonly string[] speciesList = { "tomato", "corn", "melon" };
+    //private readonly string[] speciesList = { "tomato", "corn", "melon" };
 
     private GameObject[] cropObjects; // unsure if it will work
     private byte[] sunLevels;
     private byte[] waterLevels;
     private byte[] growthLevels;
-    private string[] cropSpecies;
+    //private string[] cropSpecies;
+    private CropType[] cropSpecies;
+    private List<CropType> cropTypes = new List<CropType>();
     private Stack<BoardState> undoStack;
     private Stack<BoardState> redoStack;
     GameObject player;
@@ -27,6 +30,27 @@ public class CropManager : MonoBehaviour
     StreamWriter sw;
 
     public PlantDefinitionLanguage plantDefinitionLanguage;
+    public class CropType{
+            public string name;
+            public double sunMod;
+            public double waterMod;
+            public string color;
+            
+            public CropType(string name, double sunMod, double waterMod, string color){
+                this.name = name;
+                this.sunMod = sunMod;
+                this.waterMod = waterMod;
+                this.color = color;
+            }
+            public override bool Equals(object obj)
+            {
+                CropType tempType = (CropType)obj;
+                return (this.name == tempType.name) && (this.sunMod == tempType.sunMod) && (this.waterMod == tempType.waterMod) && (this.color == tempType.color);
+            }
+            
+            /*public static bool operator ==(CropType a, CropType b) => a.Equals(b);
+            public static bool operator !=(CropType a, CropType b) => !a.Equals(b);*/
+        }
     private void Start()
     {
         // Calculate total number of cells in the crop field
@@ -41,22 +65,11 @@ public class CropManager : MonoBehaviour
         sunLevels = new byte[totalCells];
         waterLevels = new byte[totalCells];
         growthLevels = new byte[totalCells];
-        cropSpecies = new string[totalCells];
-
+        //cropSpecies = new string[totalCells];
+        cropSpecies = new CropType[totalCells];
         // new implementation
-        for (int x = 0; x < BOARD_SIZE; x++)
-        {
-            for (int y = 0; y < BOARD_SIZE; y++)
-            {
-                int index = x * BOARD_SIZE + y;
-
-                cropObjects[index] = null;
-                cropSpecies[index] = speciesList[UnityEngine.Random.Range(0, 3)];
-                sunLevels[index] = 0;
-                waterLevels[index] = 0;
-                growthLevels[index] = 0;
-            }
-        }
+        
+        
         if (File.Exists(filePath))
         {
             //dataFile = File.Open(filePath, FileMode.Open);
@@ -66,39 +79,46 @@ public class CropManager : MonoBehaviour
             while (line != null)
             {
                 string[] parsed = line.Split(' ');
-                if (parsed.Contains("cell:"))
+                if (parsed.Contains("crop:"))
                 {
-                    int tempIndex = Array.IndexOf(parsed, "cell:");
-                    int lineX = Int32.Parse(parsed[tempIndex + 1]);
-                    int lineY = Int32.Parse(parsed[tempIndex + 2]);
-                    int arrIndex = (lineX * BOARD_SIZE) + lineY;
+                    string newName = parsed[Array.IndexOf(parsed, "crop:") + 1];
+                    double newSun = 1;
+                    double newWater = 1;
+                    string newColor = "Red";
                     if (parsed.Contains("sun:"))
                     {
-                        sunLevels[arrIndex] = (byte)Int32.Parse(parsed[Array.IndexOf(parsed, "sun:") + 1]);
+                        newSun = Double.Parse(parsed[Array.IndexOf(parsed, "sun:") + 1]);
                     }
                     if (parsed.Contains("water:"))
                     {
-                        waterLevels[arrIndex] = (byte)Int32.Parse(parsed[Array.IndexOf(parsed, "water:") + 1]);
+                        newWater = Double.Parse(parsed[Array.IndexOf(parsed, "water:") + 1]);
                     }
-                    if (parsed.Contains("growth:"))
+                    if (parsed.Contains("color:"))
                     {
-                        growthLevels[arrIndex] = (byte)Int32.Parse(parsed[Array.IndexOf(parsed, "growth:") + 1]);
+                        newColor = parsed[Array.IndexOf(parsed, "color:") + 1];
                     }
-                    if (parsed.Contains("species:"))
-                    {
-                        cropSpecies[arrIndex] = parsed[Array.IndexOf(parsed, "species:") + 1];
+                    CropType myCrop = new CropType(newName, newSun, newWater, newColor);
+                    if(cropTypes.IndexOf(myCrop) == -1){
+                        cropTypes.Add(myCrop);
                     }
                 }
-                /* else if(){//If parsed.Contains("waterrate:") then set the water rate accordingly 
-
-
-                 }
-                 else if(){//If parsed.Contains("winpoints:") etc, there should only be if/else if, no ELSE because the else is just going to the next line at the end of (line != null) loop
-
-                 }*/
                 line = sr.ReadLine();
             }
+            
             sr.Close();
+        }
+        for (int x = 0; x < BOARD_SIZE; x++)
+        {
+            for (int y = 0; y < BOARD_SIZE; y++)
+            {
+                int index = x * BOARD_SIZE + y;
+                cropObjects[index] = null;
+                //cropSpecies[index] = speciesList[UnityEngine.Random.Range(0, 3)];
+                cropSpecies[index] = cropTypes[UnityEngine.Random.Range(0, (cropTypes.Count))];
+                sunLevels[index] = 0;
+                waterLevels[index] = 0;
+                growthLevels[index] = 0;
+            }
         }
         RegenerateBoard();
         SaveBoardState();
@@ -181,11 +201,11 @@ public class CropManager : MonoBehaviour
         return growthLevels[index];
     }
 
-    public string GetSpecies(int x, int y)
+    /*public CropType GetSpecies(int x, int y)
     {
         int index = x * BOARD_SIZE + y;
         return cropSpecies[index];
-    }
+    }*/
 
     public bool Plant(int x, int y)
     {
@@ -200,7 +220,15 @@ public class CropManager : MonoBehaviour
             //
             Material myMaterial = new(Shader.Find("Standard"));
             cropObjects[index].GetComponent<Renderer>().material = myMaterial;
-            switch (cropSpecies[index])
+            Dictionary<string, Color> colorMap = new Dictionary<string, Color>();
+            colorMap["red"] = Color.red;
+            colorMap["yellow"] = Color.yellow;
+            colorMap["green"] = Color.green;
+            colorMap["blue"] = Color.blue;
+            colorMap["white"] = Color.white;
+            colorMap["black"] = Color.red;
+            myMaterial.color = colorMap[cropSpecies[index].color];
+            /*switch (cropSpecies[index])
             {
                 case "tomato":
                     myMaterial.color = Color.red;
@@ -211,7 +239,7 @@ public class CropManager : MonoBehaviour
                 case "melon":
                     myMaterial.color = Color.green;
                     break;
-            }
+            }*/
             return true;
         }
         return false;
@@ -401,16 +429,16 @@ public class CropManager : MonoBehaviour
         public byte[] sunLevels;
         public byte[] waterLevels;
         public byte[] growthLevels;
-        public string[] cropSpecies;
+        public CropType[] cropSpecies;
         public Vector3 playerPosition;
         public int totalPoints;
-        public BoardState(GameObject[] cropObject, byte[] sunLevel, byte[] waterLevel, byte[] growthLevel, string[] cropSpeciesList, Vector3 playerPosition, int totalPoints)
+        public BoardState(GameObject[] cropObject, byte[] sunLevel, byte[] waterLevel, byte[] growthLevel, CropType[] cropSpeciesList, Vector3 playerPosition, int totalPoints)
         {
             this.cropObjects = new GameObject[sunLevel.Length];
             this.sunLevels = new byte[sunLevel.Length];
             this.waterLevels = new byte[sunLevel.Length];
             this.growthLevels = new byte[sunLevel.Length];
-            this.cropSpecies = new string[sunLevel.Length];
+            this.cropSpecies = new CropType[sunLevel.Length];
             this.playerPosition = new Vector3();
             for (int i = 0; i < sunLevel.Length; i++)
             {
