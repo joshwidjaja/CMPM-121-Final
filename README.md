@@ -113,8 +113,10 @@ In this example these lines indicate the addition of two species, and the base g
 ### Internal DSL for Plants and Growth Conditions
 Using one or more short code examples (possibly with irrelevant or repetitive blocks removed with "/* ... */" comments), show us what it is like to use your DSL. Comment on which host language is being used (because the person reading your devlog might not have read the rest of your project's code to guess which language you are using). After the code example, explain the meaning of your code snippets in natural language to help us understand the meaning.
 Make sure to highlight how your internal DSL allows using host language features that would be difficult to offer in an external DSL.
+```c#
 myMaterial.color = colorMap[cropSpecies[index].color];
- if ((sunLevels[index] >= (3 * sunSizeMod)) && (waterLevels[index] >= (3 * waterSizeMod)) && (growthLevels[index] < 2))
+if ((sunLevels[index] >= (3 * sunSizeMod)) && (waterLevels[index] >= (3 * waterSizeMod)) && (growthLevels[index] < 2))
+```
 Each time a line in our input file is set up correctly, an instance of a class called CropType(in c#) is created, that has a name, sunmod, watermod, and color, those being two doubles and two strings. The only method is the override of equals, which would be difficult to offer in an external dsl. This equality is used so exact same lines in our input file won't be added as a seperate crop type if there was accidentally a duplicate line. This allows our cropTypes array to use the IndexOf to find if the newly created croptype already exists in the array, and if so, don't add it.
 ## Reflection
 Looking back on how you achieved the new F2 requirements, how has your team’s plan changed? Did you reconsider any of the choices you previously described for Tools and Materials or your Roles? Has your game design evolved now that you've started to think about giving the player more feedback? It would be very suspicious if you didn’t need to change anything. There’s learning value in you documenting how your team’s thinking has changed over time.
