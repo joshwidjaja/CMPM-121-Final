@@ -25,23 +25,19 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            transform.Translate(Vector3.forward);
-            cropManager.TriggerTurn();
+            MoveUp();
         }
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            transform.Translate(Vector3.back);
-            cropManager.TriggerTurn();
+            MoveDown();
         }
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            transform.Translate(Vector3.left);
-            cropManager.TriggerTurn();
+            MoveLeft();
         }
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            transform.Translate(Vector3.right);
-            cropManager.TriggerTurn();
+            MoveRight();
         }
         if (Input.GetKeyDown(KeyCode.Z))
         {
@@ -73,5 +69,29 @@ public class PlayerController : MonoBehaviour
             jumpState = JumpButtonState.up;
             cropManager.TriggerTurn();
         }
+    }
+
+    public void MoveUp()
+    {
+        transform.Translate(Vector3.forward);
+        cropManager.TriggerTurn();
+    }
+
+    public void MoveDown()
+    {
+        transform.Translate(Vector3.back);
+        cropManager.TriggerTurn();
+    }
+
+    public void MoveLeft()
+    {
+        transform.Translate(Vector3.left);
+        cropManager.TriggerTurn();
+    }
+
+    public void MoveRight()
+    {
+        transform.Translate(Vector3.right);
+        cropManager.TriggerTurn();
     }
 }
