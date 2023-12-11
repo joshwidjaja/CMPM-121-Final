@@ -105,16 +105,17 @@ Use Markdown to create a code block when sharing an example of your language.
 For our external DSL, our team chose not to base our DSL on a pre-existing data language. We chose this as a route for simplicity and ease of integration with pre-existing code. In addition, by using a custom format to this solution, it enables our team to have more control over implementing features in the future. Instead of a previous format, our team uses a TXT file to parse through lines of text, which is then utilized in our game. Our design works as each line in the corresponding TXT file relates to a cell on the game board, specifying its coordinates, sun level, water level, growth level, and crop species. The file also contains some sort of setup for the initial board state, essential for if the user is planning to do crop cell data modification. 
 
 ```plain text
-cell: 1 2 sun: 3 water: 2 growth: 1 species: Tomato
-cell: 2 3 sun: 5 water: 1 growth: 2 species: Corn
+crop: corn sun: 10 water: 10 color: yellow
+crop: tomato sun: 1 water: 1 color: red
 ```
-In this example, the first line indicates a cell at coordinates (1, 2) with a sun level of 3, water level of 2, growth level of 1, and is populated with Tomato. The second line represents another cell at coordinates (2, 3) with different attribute values and a crop species of Corn.
+In this example these lines indicate the addition of two species, and the base game has none by default you must have at least one in the file. The sun and water modifiers are multiplied by the requires values of sun and water for each growth level of each plant. So If you have sun: 10 and water: 10 you will need ten times as much sun and water just to go from the first to second growth level.
 
 ### Internal DSL for Plants and Growth Conditions
 Using one or more short code examples (possibly with irrelevant or repetitive blocks removed with "/* ... */" comments), show us what it is like to use your DSL. Comment on which host language is being used (because the person reading your devlog might not have read the rest of your project's code to guess which language you are using). After the code example, explain the meaning of your code snippets in natural language to help us understand the meaning.
-
 Make sure to highlight how your internal DSL allows using host language features that would be difficult to offer in an external DSL.
-
+myMaterial.color = colorMap[cropSpecies[index].color];
+ if ((sunLevels[index] >= (3 * sunSizeMod)) && (waterLevels[index] >= (3 * waterSizeMod)) && (growthLevels[index] < 2))
+Each time a line in our input file is set up correctly, an instance of a class called CropType(in c#) is created, that has a name, sunmod, watermod, and color, those being two doubles and two strings. The only method is the override of equals, which would be difficult to offer in an external dsl. This equality is used so exact same lines in our input file won't be added as a seperate crop type if there was accidentally a duplicate line. This allows our cropTypes array to use the IndexOf to find if the newly created croptype already exists in the array, and if so, don't add it.
 ## Reflection
 Looking back on how you achieved the new F2 requirements, how has your team’s plan changed? Did you reconsider any of the choices you previously described for Tools and Materials or your Roles? Has your game design evolved now that you've started to think about giving the player more feedback? It would be very suspicious if you didn’t need to change anything. There’s learning value in you documenting how your team’s thinking has changed over time.
 
