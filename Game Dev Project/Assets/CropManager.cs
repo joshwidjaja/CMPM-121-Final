@@ -344,6 +344,12 @@ public class CropManager : MonoBehaviour
     {
         BoardState boardState = new BoardState(cropObjects, sunLevels, waterLevels, growthLevels, cropSpecies, player.transform.position, totalPoints);
         undoStack.Push(boardState);
+
+        // clears redoStack if new action was taken to replace it
+        if (redoStack.Count >= 0)
+        {
+            redoStack.Clear();
+        }
     }
 
     public void LoadBoardState(BoardState boardState)
