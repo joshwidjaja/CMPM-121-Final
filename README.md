@@ -88,3 +88,35 @@ Looking back on how you achieved the new F1 requirements, how has your team’s 
 Initially when coding our game, we did not store the data for each cell into an array. Most time spent for satisfying F1 related back to refactoring cell data to be stored into individual arrays, all held within a structure. Prior to reworking the data structure into this format, the game originally created a new object to be added onto the board. When refactoring in this updated version, we now have arrays to hold objects in the game, along with separate arrays to store data values for other aspects of each cell. The indices of cropObjects, the array used to store cell data, store individual objects, whenever a new object is added to the board.
 
 Even though we didn't finish the save/load, we had to think differently and come up with a new trick to save. C# without libraries installed doesn't have json.parse and json.stringify as a default, which was the old plan to accomplish saving and loading using files. We would have to write our own data parser for saving and loading our array's data but we didn't have the time.
+
+# Devlog Entry F2 - 10 December 2023
+## How we satisfied the software requirements
+### F0+F1
+The devlog should briefly comment on how the previous F0 and F1 requirements remain satisfied in the latest version of your software. If no major changes were made, you can just simply state that no major changes were made. However, if you evolved your design to improve code quality (a good idea!), this section of your devlog entry would be a good place to brag about it.
+
+[F0.a-g] Same as last week
+[F1.a-d] Same as last week
+
+### External DSL for Scenario Design
+The devlog should explain the design of your external DSL for scenario design. Tell us which pre-existing data language (e.g. JSON/YAML/TOML)  your DSL is based on. If it is not based on a pre-existing language, briefly explain your choice. Show us a short example of a scenario definition in this new language (even if it doesn't exactly match one used in your game's actual code). Next to the code example, give us a natural language translation of the meaning of that program so we can begin to learn how your language works.
+
+Use Markdown to create a code block when sharing an example of your language.
+
+For our external DSL, our team chose not to base our DSL on a pre-existing data language. We chose this as a route for simplicity and ease of integration with pre-existing code. In addition, by using a custom format to this solution, it enables our team to have more control over implementing features in the future. Instead of a previous format, our team uses a TXT file to parse through lines of text, which is then utilized in our game. Our design works as each line in the corresponding TXT file relates to a cell on the game board, specifying its coordinates, sun level, water level, growth level, and crop species. The file also contains some sort of setup for the initial board state, essential for if the user is planning to do crop cell data modification. 
+
+```plain text
+cell: 1 2 sun: 3 water: 2 growth: 1 species: Tomato
+cell: 2 3 sun: 5 water: 1 growth: 2 species: Corn
+```
+In this example, the first line indicates a cell at coordinates (1, 2) with a sun level of 3, water level of 2, growth level of 1, and is populated with Tomato. The second line represents another cell at coordinates (2, 3) with different attribute values and a crop species of Corn.
+
+### Internal DSL for Plants and Growth Conditions
+Using one or more short code examples (possibly with irrelevant or repetitive blocks removed with "/* ... */" comments), show us what it is like to use your DSL. Comment on which host language is being used (because the person reading your devlog might not have read the rest of your project's code to guess which language you are using). After the code example, explain the meaning of your code snippets in natural language to help us understand the meaning.
+
+Make sure to highlight how your internal DSL allows using host language features that would be difficult to offer in an external DSL.
+
+## Reflection
+Looking back on how you achieved the new F2 requirements, how has your team’s plan changed? Did you reconsider any of the choices you previously described for Tools and Materials or your Roles? Has your game design evolved now that you've started to think about giving the player more feedback? It would be very suspicious if you didn’t need to change anything. There’s learning value in you documenting how your team’s thinking has changed over time.
+
+
+Although there haven't been many changes to our team’s plan, our game design has altered from our initial plan. Previously we had hoped to include bigger changes to our code for each step. However, because of finals and being short on time, we have started to scale down our ideas and focus on meeting the requirements. Additionally, we talked about using a pre-existing language model to complete our external DSL but found that going our own way would be easier for us to integrate into our code. Moreover, this helped us simplify our design to continue further implementations on the project.
