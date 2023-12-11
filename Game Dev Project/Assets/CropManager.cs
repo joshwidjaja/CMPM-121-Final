@@ -267,17 +267,18 @@ public class CropManager : MonoBehaviour
         {
             return;
         }
-
+        double sunSizeMod = cropSpecies[index].sunMod;
+        double waterSizeMod = cropSpecies[index].waterMod;
         float[] sizeList = { 0.2f, 0.3f, 0.4f, 0.5f };
-        if ((sunLevels[index] >= 1) && (waterLevels[index] >= 1) && (growthLevels[index] < 1))
+        if ((sunLevels[index] >= (1 * sunSizeMod)) && (waterLevels[index] >= (1 * waterSizeMod)) && (growthLevels[index] < 1))
         {
             growthLevels[index] = 1;
         }
-        if ((sunLevels[index] >= 3) && (waterLevels[index] >= 3) && (growthLevels[index] < 2))
+        if ((sunLevels[index] >= (3 * sunSizeMod)) && (waterLevels[index] >= (3 * waterSizeMod)) && (growthLevels[index] < 2))
         {
             growthLevels[index] = 2;
         }
-        if ((sunLevels[index] >= 5) && (waterLevels[index] >= 5) && (growthLevels[index] < 3))
+        if ((sunLevels[index] >= (5*sunSizeMod)) && (waterLevels[index] >= (5*waterSizeMod)) && (growthLevels[index] < 3))
         {
             growthLevels[index] = 3;
         }
@@ -344,12 +345,6 @@ public class CropManager : MonoBehaviour
     {
         BoardState boardState = new BoardState(cropObjects, sunLevels, waterLevels, growthLevels, cropSpecies, player.transform.position, totalPoints);
         undoStack.Push(boardState);
-
-        // clears redoStack if new action was taken to replace it
-        if (redoStack.Count >= 0)
-        {
-            redoStack.Clear();
-        }
     }
 
     public void LoadBoardState(BoardState boardState)

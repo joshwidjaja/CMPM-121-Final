@@ -1,3 +1,3 @@
-crop: corn sun: 2 water: 0.5 color: yellow
+crop: corn sun: 10 water: 10 color: yellow
 crop: tomato sun: 1 water: 1 color: red
 crop: melon sun: 1 water: 2 color: green
