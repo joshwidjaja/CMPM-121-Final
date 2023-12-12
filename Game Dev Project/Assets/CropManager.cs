@@ -56,7 +56,7 @@ public class CropManager : MonoBehaviour
         // Calculate total number of cells in the crop field
 
         // Arrays to store sun, water, growth levels, and crop species for each cell
-        string filePath = Directory.GetCurrentDirectory() + @"\data.txt";
+        string filePath = Directory.GetCurrentDirectory() + @"/data.txt";
 
         player = GameObject.Find("Player");
         undoStack = new Stack<BoardState>();
