@@ -65,7 +65,7 @@ public class UICreator : MonoBehaviour
 
         RectTransform textTransform = uiText.GetComponent<RectTransform>();
         textTransform.anchoredPosition = new Vector2(0, 0);
-        textTransform.sizeDelta = new Vector2(30, 30);
+        textTransform.sizeDelta = new Vector2(size1, size2);
         textComponent.fontSize = 24;
         textComponent.SetText(text);
         textComponent.alignment = TextAlignmentOptions.Center;
