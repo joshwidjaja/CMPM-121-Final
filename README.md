@@ -121,5 +121,41 @@ Each time a line in our input file is set up correctly, an instance of a class c
 ## Reflection
 Looking back on how you achieved the new F2 requirements, how has your team’s plan changed? Did you reconsider any of the choices you previously described for Tools and Materials or your Roles? Has your game design evolved now that you've started to think about giving the player more feedback? It would be very suspicious if you didn’t need to change anything. There’s learning value in you documenting how your team’s thinking has changed over time.
 
-
 Although there haven't been many changes to our team’s plan, our game design has altered from our initial plan. Previously we had hoped to include bigger changes to our code for each step. However, because of finals and being short on time, we have started to scale down our ideas and focus on meeting the requirements. Additionally, we talked about using a pre-existing language model to complete our external DSL but found that going our own way would be easier for us to integrate into our code. Moreover, this helped us simplify our design to continue further implementations on the project.
+
+# Devlog Entry F3 - 14 December 2023
+## How we satisfied the software requirements
+### F0+F1+F2
+The devlog should briefly comment on how the previous requirements remain satisfied in the latest version of your software. If no major changes were made, you can just simply state that no major changes were made. However, if you evolved your design to improve code quality (a good idea!) this section of your devlog entry would be a good place to brag about it.
+
+[F0.a-g] Same as last week
+[F1.a-d] Same as last week
+[F2.a-b] Same as last week
+
+### Internationalization
+The devlog should explain how your code has changed to distinguish between strings internal to the program and strings that will be shown to the player (needing localization). If you did something clever with your language's type system so that the compiler helps you catch incomplete translations or other missing messages, brag about that in this section.
+
+This section should outline which code or data files need to get changed when adding support for a new language or adding a new translatable message to the game.
+
+In our code, we have a separate file, LanguageManager.cs, which contains information for our selected languages. In this file, the code will detect commands given by the user, by selecting a button of their choice, with the language associated to that button being set as the default language button for the current playthrough of the game.
+
+### Localization
+Tell us about which three languages your game supports. For each language, tell us about how you accomplished that localization. Did a team member use their own knowledge of the language? Did you have a friend, volunteer classmate, or paid expert help? Did you make use of a tool like ChatGPT to help? (If so, describe your prompts so that we can see how you gave the system extra context for your project.)
+
+How should the user select which language will be used? Do they change the language setting from inside the game? Did you release three different versions of the game with a different language hard-coded into each? Does the player launch the game with special options (e.g. command line arguments or URL parameters) that encode the choice of language?
+
+Upon starting up the game, there are buttons the player can press to switch between three languages supported in the game: English, Japanese, and Hebrew. When a button is pressed, the game will then be altered to utilize that chosen language. These languages were chosen each for different reasons. Since everyone on the team speaks English, this was our default language everyone where everyone is an expert. For Japanese, one of our team members were already familiar with this language, opting for this as our second option. Finally, Hebrew was chosen as it was a more simple language for our team to work with, as compared to languages such as Arabic.
+
+### Mobile Installation
+
+How did you get your game to be installable on a smartphone-class mobile device? If you followed a tutorial, guide, video, or blogpost, directly link to those resources that helped you learn. What changes were needed to make the game installable?
+
+### Mobile Play (Offline)
+
+What changes to your design were needed to make it play well on a mobile device? Were there any changes needed to make sure it worked in the offline case?
+
+When implementing mobile play, our team mostly focused on changing how a player interacts with the game. Up to this point, we have been detecting player inputs by having the code listen for any keys being pressed down. Once a key was pressed, a given event would be triggered, and the game would be updated in some form. For implementing mobile play, we added in the ability to detect player inputs by tapping on screen buttons, which act the same way as the key events, but allow the use of a touch screen instead.
+
+## Reflection
+Looking back on how you achieved the new F3 requirements, how has your team’s plan changed? Did you reconsider any of the choices you previously described for Tools and Materials or your Roles? Has your game design evolved now that you've started to think about giving the player more feedback? It would be very suspicious if you didn’t need to change anything. There’s learning value in you documenting how your team’s thinking has changed over time.
+
