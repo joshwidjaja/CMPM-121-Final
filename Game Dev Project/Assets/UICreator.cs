@@ -49,8 +49,8 @@ public class UICreator : MonoBehaviour
         
         localizables.Add(MakeButton("Plant", -283, -05, buttonSquareX, buttonSquareY, "P", playerController.Plant), Plant);
         localizables.Add(MakeButton("Harvest", -283, 95, buttonSquareX, buttonSquareY, "H", playerController.Harvest), Harvest);
-        localizables.Add(MakeButton("Undo", 313, -05, buttonSquareX, buttonSquareY, "U", playerController.Undo), Undo);
-        localizables.Add(MakeButton("Redo", 313, 95, buttonSquareX, buttonSquareY, "R", playerController.Redo), Redo);
+        localizables.Add(MakeButton("Undo", 253, -05, buttonSquareX, buttonSquareY, "U", playerController.Undo), Undo);
+        localizables.Add(MakeButton("Redo", 253, 95, buttonSquareX, buttonSquareY, "R", playerController.Redo), Redo);
 
         MakeButton("English", -7, 168, buttonSquareX * 3f, buttonSquareY, "English", languageManager.SetToEnglish);
         MakeButton("Japanese", 102, 168, buttonSquareX * 2f, buttonSquareY, "日本語", languageManager.SetToJapanese);
