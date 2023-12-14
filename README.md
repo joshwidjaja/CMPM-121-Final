@@ -149,6 +149,7 @@ Upon starting up the game, there are buttons the player can press to switch betw
 ### Mobile Installation
 
 How did you get your game to be installable on a smartphone-class mobile device? If you followed a tutorial, guide, video, or blogpost, directly link to those resources that helped you learn. What changes were needed to make the game installable?
+We built the game to IOS using unity, but had problems due to you needing a mac computer to build an IOS app. There is an app that allows you to play your unity games on mobile when the phone is plugged in using a cord to your computer, but that isn't really an "installable" game.
 
 ### Mobile Play (Offline)
 
@@ -158,4 +159,5 @@ When implementing mobile play, our team mostly focused on changing how a player 
 
 ## Reflection
 Looking back on how you achieved the new F3 requirements, how has your team’s plan changed? Did you reconsider any of the choices you previously described for Tools and Materials or your Roles? Has your game design evolved now that you've started to think about giving the player more feedback? It would be very suspicious if you didn’t need to change anything. There’s learning value in you documenting how your team’s thinking has changed over time.
+Our plan really hasn't changed. The only thing that has been thought about differently is creation of UI that would look good on mobile if you made a game that you might port to mobile and PC in the future, without doing some complicated platform-specific repositioning of UI elements.
 
