@@ -15,23 +15,31 @@ public class UICreator : MonoBehaviour
     Canvas myCanvas;
 
     public PlayerController playerController;
-    public LanguageManager languageManager;
-
+    //public LanguageManager languageManager;
     const float buttonSquareX = 30f;
     const float buttonSquareY = 30f;
+
+    
     const int EN = 0;
     const int JA = 1;
     const int HE = 2;
 
-    string[] Plant = new [] {"P", "植える", "שתל"};
-    string[] Harvest = new [] {"H", "収穫", "קצר"};
-    string[] Undo = new [] {"U", "元に戻す", "בטל"};
-    string[] Redo = new [] {"R", "やり直し", "בצע שוב"};
-
+    string[] Plant = new [] {"Plant", "植える", "שתל"};
+    string[] Harvest = new [] {"Harvest", "収穫", "קצר"};
+    string[] Undo = new [] {"Undo", "元に戻す", "בטל"};
+    string[] Redo = new [] {"Redo", "やり直し", "בצע שוב"};
+    
     Dictionary<GameObject, string[]> localizables;
-
+    TMP_FontAsset myTMPFont;
     void Start()
     {
+    
+        for(int i = 0; i < Font.GetOSInstalledFontNames().Length; i++){
+            Debug.Log(Font.GetOSInstalledFontNames()[i]);
+        }
+        Font theFont = new Font(Font.GetPathsToOSFonts()[Array.IndexOf(Font.GetOSInstalledFontNames(), "Microsoft Sans Serif")]);
+        myTMPFont = TMP_FontAsset.CreateFontAsset(theFont);
+        Debug.Log(myTMPFont);
         canvasObj = new GameObject();
         canvasObj.name = "MyCanvas";
         canvasObj.AddComponent<Canvas>();
@@ -47,14 +55,14 @@ public class UICreator : MonoBehaviour
         MakeButton("DOWN", -283, -170, buttonSquareX, buttonSquareY, "↓", playerController.MoveDown);
         MakeButton("RIGHT", -251, -139, buttonSquareX, buttonSquareY, "→", playerController.MoveRight);
         
-        localizables.Add(MakeButton("Plant", -283, -05, buttonSquareX, buttonSquareY, "P", playerController.Plant), Plant);
-        localizables.Add(MakeButton("Harvest", -283, 95, buttonSquareX, buttonSquareY, "H", playerController.Harvest), Harvest);
-        localizables.Add(MakeButton("Undo", 313, -05, buttonSquareX, buttonSquareY, "U", playerController.Undo), Undo);
-        localizables.Add(MakeButton("Redo", 313, 95, buttonSquareX, buttonSquareY, "R", playerController.Redo), Redo);
+        localizables.Add(MakeButton("Plant", -275, -05, 90, buttonSquareY, "Plant", playerController.Plant), Plant);
+        localizables.Add(MakeButton("Harvest", -275, 95, 90, buttonSquareY, "Harvest", playerController.Harvest), Harvest);
+        localizables.Add(MakeButton("Undo", 275, -05, 90, buttonSquareY, "Undo", playerController.Undo), Undo);
+        localizables.Add(MakeButton("Redo", 275, 95, 90, buttonSquareY, "Redo", playerController.Redo), Redo);
 
-        MakeButton("English", -7, 168, buttonSquareX * 3f, buttonSquareY, "English", languageManager.SetToEnglish);
-        MakeButton("Japanese", 102, 168, buttonSquareX * 2f, buttonSquareY, "日本語", languageManager.SetToJapanese);
-        MakeButton("Hebrew", 202, 168, buttonSquareX * 2.5f, buttonSquareY, "עברית", languageManager.SetToHebrew);
+        MakeButton("English",  275, 168, buttonSquareX * 3f, buttonSquareY, "English", SetToEnglish);
+        MakeButton("Japanese", 375, 168, buttonSquareX * 3f, buttonSquareY, "日本語", SetToJapanese);
+        MakeButton("Hebrew", 475, 168, buttonSquareX * 3f, buttonSquareY, "עברית", SetToHebrew);
     }
     GameObject MakeButton(string name, int pos1, int pos2, float size1, float size2, string text, UnityEngine.Events.UnityAction theFunction){
         GameObject uiObject = new GameObject();
@@ -83,7 +91,20 @@ public class UICreator : MonoBehaviour
         textComponent.SetText(text);
         textComponent.alignment = TextAlignmentOptions.Center;
         textComponent.color = Color.black;
+        textComponent.font = myTMPFont;
         return uiObject;
+    }
+    public void SetToEnglish()
+    {
+        UpdateLanguage(EN);
+    }
+    public void SetToJapanese()
+    {
+        UpdateLanguage(JA);
+    }
+    public void SetToHebrew()
+    {
+        UpdateLanguage(HE);
     }
 
     public void UpdateLanguage(int language)
@@ -96,6 +117,8 @@ public class UICreator : MonoBehaviour
             switch (language)
             {
                 case EN:
+                    width = buttonSquareX * 3f;
+                    break;
                 default:
                     width = buttonSquareX;
                     break;
@@ -103,7 +126,7 @@ public class UICreator : MonoBehaviour
                     width = buttonSquareX * 3f;
                     break;
                 case HE:
-                    width = buttonSquareX * 2.5f;
+                    width = buttonSquareX * 3f;
                     break;
             }
 
@@ -114,8 +137,7 @@ public class UICreator : MonoBehaviour
     public void SetButtonWidth(GameObject uiObject, float width)
     {
         RectTransform uiTransform = uiObject.GetComponent<RectTransform>();
-        RectTransform textTransform = uiObject.GetComponentInChildren<RectTransform>();
-
+        RectTransform textTransform = uiObject.transform.GetChild(0).GetComponent<RectTransform>();
         uiTransform.sizeDelta = new Vector2(width, buttonSquareY);
         textTransform.sizeDelta = new Vector2(width, buttonSquareY);
     }
