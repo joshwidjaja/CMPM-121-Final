@@ -12,11 +12,15 @@ public class UICreator : MonoBehaviour
 {
     // Start is called before the first frame update
     GameObject canvasObj;
-    Canvas myCanvas;   
+    Canvas myCanvas;
+
+    public PlayerController playerController;
+    public LanguageManager languageManager;
+
     void Start()
     {
-        int buttonSquareX = 30;
-        int buttonSquareY = 30;
+        float buttonSquareX = 30f;
+        float buttonSquareY = 30f;
 
         canvasObj = new GameObject();
         canvasObj.name = "MyCanvas";
@@ -26,16 +30,20 @@ public class UICreator : MonoBehaviour
         canvasObj.AddComponent<CanvasScaler>();
         canvasObj.AddComponent<GraphicRaycaster>();
         
-        MakeButton("UP", -283, -105, buttonSquareX, buttonSquareY, "↑", GameObject.Find("Player").GetComponent<PlayerController>().MoveUp);
-        MakeButton("LEFT", -315, -139, buttonSquareX, buttonSquareY, "←", GameObject.Find("Player").GetComponent<PlayerController>().MoveLeft);
-        MakeButton("DOWN", -283, -170, buttonSquareX, buttonSquareY, "↓", GameObject.Find("Player").GetComponent<PlayerController>().MoveDown);
-        MakeButton("RIGHT", -251, -139, buttonSquareX, buttonSquareY, "→", GameObject.Find("Player").GetComponent<PlayerController>().MoveRight);
-        MakeButton("Plant", -283, -05, buttonSquareX, buttonSquareY, "P", GameObject.Find("Player").GetComponent<PlayerController>().Plant);
-        MakeButton("Harvest", -283, 95, buttonSquareX, buttonSquareY, "H", GameObject.Find("Player").GetComponent<PlayerController>().Harvest);
-        MakeButton("Undo", 483, -05, buttonSquareX, buttonSquareY, "U", GameObject.Find("Player").GetComponent<PlayerController>().Undo);
-        MakeButton("Redo", 483, 95, buttonSquareX, buttonSquareY, "R", GameObject.Find("Player").GetComponent<PlayerController>().Redo);
+        MakeButton("UP", -283, -105, buttonSquareX, buttonSquareY, "↑", playerController.MoveUp);
+        MakeButton("LEFT", -315, -139, buttonSquareX, buttonSquareY, "←", playerController.MoveLeft);
+        MakeButton("DOWN", -283, -170, buttonSquareX, buttonSquareY, "↓", playerController.MoveDown);
+        MakeButton("RIGHT", -251, -139, buttonSquareX, buttonSquareY, "→", playerController.MoveRight);
+        MakeButton("Plant", -283, -05, buttonSquareX, buttonSquareY, "P", playerController.Plant);
+        MakeButton("Harvest", -283, 95, buttonSquareX, buttonSquareY, "H", playerController.Harvest);
+        MakeButton("Undo", 483, -05, buttonSquareX, buttonSquareY, "U", playerController.Undo);
+        MakeButton("Redo", 483, 95, buttonSquareX, buttonSquareY, "R", playerController.Redo);
+
+        MakeButton("English", -7, 168, buttonSquareX * 3f, buttonSquareY, "English", languageManager.SetToEnglish);
+        MakeButton("Japanese", 102, 168, buttonSquareX * 2f, buttonSquareY, "日本語", languageManager.SetToJapanese);
+        MakeButton("Hebrew", 202, 168, buttonSquareX * 2.5f, buttonSquareY, "עִבְֿרִית", languageManager.SetToHebrew);
     }
-    GameObject MakeButton(string name, int pos1, int pos2, int size1, int size2, string text, UnityEngine.Events.UnityAction theFunction){
+    GameObject MakeButton(string name, int pos1, int pos2, float size1, float size2, string text, UnityEngine.Events.UnityAction theFunction){
         GameObject uiObject = new GameObject();
         uiObject.name = name;
         uiObject.AddComponent<UnityEngine.UI.Button>();
