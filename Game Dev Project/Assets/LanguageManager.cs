@@ -2,33 +2,35 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Language {English, Japanese, Hebrew};
+// public enum Language {English, Japanese, Hebrew};
 public class LanguageManager : MonoBehaviour
 {
-    public Language currentLanguage;
+    const int EN = 0;
+    const int JA = 1;
+    const int HE = 2;
+    public UICreator uiCreator;
+    public int currentLanguage;
 
     private void Start()
     {
-        currentLanguage = Language.English;
-    }
-
-    public void ChangeLanguage(Language language)
-    {
-        currentLanguage = language;
+        currentLanguage = EN;
     }
 
     public void SetToEnglish()
     {
-        currentLanguage = Language.English;
+        currentLanguage = EN;
+        uiCreator.UpdateLanguage(EN);
     }
 
     public void SetToJapanese()
     {
-        currentLanguage = Language.Japanese;
+        currentLanguage = JA;
+        uiCreator.UpdateLanguage(JA);
     }
 
     public void SetToHebrew()
     {
-        currentLanguage = Language.Hebrew;
+        currentLanguage = HE;
+        uiCreator.UpdateLanguage(HE);
     }
 }

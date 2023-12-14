@@ -17,11 +17,21 @@ public class UICreator : MonoBehaviour
     public PlayerController playerController;
     public LanguageManager languageManager;
 
+    const float buttonSquareX = 30f;
+    const float buttonSquareY = 30f;
+    const int EN = 0;
+    const int JA = 1;
+    const int HE = 2;
+
+    string[] Plant = new [] {"P", "植える", "שתל"};
+    string[] Harvest = new [] {"H", "収穫", "קצר"};
+    string[] Undo = new [] {"U", "元に戻す", "בטל"};
+    string[] Redo = new [] {"R", "やり直し", "בצע שוב"};
+
+    Dictionary<GameObject, string[]> localizables;
+
     void Start()
     {
-        float buttonSquareX = 30f;
-        float buttonSquareY = 30f;
-
         canvasObj = new GameObject();
         canvasObj.name = "MyCanvas";
         canvasObj.AddComponent<Canvas>();
@@ -29,19 +39,22 @@ public class UICreator : MonoBehaviour
         myCanvas.renderMode = RenderMode.ScreenSpaceOverlay;
         canvasObj.AddComponent<CanvasScaler>();
         canvasObj.AddComponent<GraphicRaycaster>();
+
+        localizables = new Dictionary<GameObject, string[]>();
         
         MakeButton("UP", -283, -105, buttonSquareX, buttonSquareY, "↑", playerController.MoveUp);
         MakeButton("LEFT", -315, -139, buttonSquareX, buttonSquareY, "←", playerController.MoveLeft);
         MakeButton("DOWN", -283, -170, buttonSquareX, buttonSquareY, "↓", playerController.MoveDown);
         MakeButton("RIGHT", -251, -139, buttonSquareX, buttonSquareY, "→", playerController.MoveRight);
-        MakeButton("Plant", -283, -05, buttonSquareX, buttonSquareY, "P", playerController.Plant);
-        MakeButton("Harvest", -283, 95, buttonSquareX, buttonSquareY, "H", playerController.Harvest);
-        MakeButton("Undo", 483, -05, buttonSquareX, buttonSquareY, "U", playerController.Undo);
-        MakeButton("Redo", 483, 95, buttonSquareX, buttonSquareY, "R", playerController.Redo);
+        
+        localizables.Add(MakeButton("Plant", -283, -05, buttonSquareX, buttonSquareY, "P", playerController.Plant), Plant);
+        localizables.Add(MakeButton("Harvest", -283, 95, buttonSquareX, buttonSquareY, "H", playerController.Harvest), Harvest);
+        localizables.Add(MakeButton("Undo", 313, -05, buttonSquareX, buttonSquareY, "U", playerController.Undo), Undo);
+        localizables.Add(MakeButton("Redo", 313, 95, buttonSquareX, buttonSquareY, "R", playerController.Redo), Redo);
 
         MakeButton("English", -7, 168, buttonSquareX * 3f, buttonSquareY, "English", languageManager.SetToEnglish);
         MakeButton("Japanese", 102, 168, buttonSquareX * 2f, buttonSquareY, "日本語", languageManager.SetToJapanese);
-        MakeButton("Hebrew", 202, 168, buttonSquareX * 2.5f, buttonSquareY, "עִבְֿרִית", languageManager.SetToHebrew);
+        MakeButton("Hebrew", 202, 168, buttonSquareX * 2.5f, buttonSquareY, "עברית", languageManager.SetToHebrew);
     }
     GameObject MakeButton(string name, int pos1, int pos2, float size1, float size2, string text, UnityEngine.Events.UnityAction theFunction){
         GameObject uiObject = new GameObject();
@@ -72,9 +85,44 @@ public class UICreator : MonoBehaviour
         textComponent.color = Color.black;
         return uiObject;
     }
-    // Update is called once per frame
-    void Update()
+
+    public void UpdateLanguage(int language)
     {
-        
+        foreach(KeyValuePair<GameObject, string[]> entry in localizables)
+        {
+            SetButtonText(entry.Key, entry.Value[language]);
+
+            float width;
+            switch (language)
+            {
+                case EN:
+                default:
+                    width = buttonSquareX;
+                    break;
+                case JA:
+                    width = buttonSquareX * 3f;
+                    break;
+                case HE:
+                    width = buttonSquareX * 2.5f;
+                    break;
+            }
+
+            SetButtonWidth(entry.Key, width);
+        }
+    }
+
+    public void SetButtonWidth(GameObject uiObject, float width)
+    {
+        RectTransform uiTransform = uiObject.GetComponent<RectTransform>();
+        RectTransform textTransform = uiObject.GetComponentInChildren<RectTransform>();
+
+        uiTransform.sizeDelta = new Vector2(width, buttonSquareY);
+        textTransform.sizeDelta = new Vector2(width, buttonSquareY);
+    }
+
+    public void SetButtonText(GameObject uiObject, string text)
+    {
+        TextMeshProUGUI textComponent = uiObject.GetComponentInChildren<TextMeshProUGUI>();
+        textComponent.SetText(text);
     }
 }

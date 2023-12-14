@@ -286,6 +286,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76ab8a12b387c4981857862b7b113fa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uiCreator: {fileID: 771530361}
   currentLanguage: 0
 --- !u!4 &209165730
 Transform:
@@ -454,7 +455,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &355006275
 MonoBehaviour:
   m_ObjectHideFlags: 0
