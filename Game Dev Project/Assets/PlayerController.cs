@@ -4,23 +4,45 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private enum JumpButtonState
+    /*private enum JumpButtonState
     {
         up,
         down
-    }
+    }*/
 
-    private JumpButtonState jumpState;
+    //private JumpButtonState jumpState;
 
     public CropManager cropManager;
 
     // Start is called before the first frame update
     private void Start()
     {
-        jumpState = JumpButtonState.up;
+        //jumpState = JumpButtonState.up;
     }
 
     // Update is called once per frame
+    public void Harvest()
+    {
+
+        cropManager.PlayerHarvest(transform.position.x, transform.position.z);
+        cropManager.TriggerTurn();
+
+    }
+    public void Plant()
+    {
+        cropManager.PlayerPlant(transform.position.x, transform.position.z);//Important that this is z, not y!
+        cropManager.TriggerTurn();
+
+    }
+    public void Undo()
+    {
+        cropManager.Undo();
+    }
+
+    public void Redo()
+    {
+        cropManager.Redo();
+    }
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.UpArrow))
@@ -41,34 +63,28 @@ public class PlayerController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Z))
         {
+            Plant();
 
-            if (jumpState == JumpButtonState.up)
-            {
-                cropManager.PlayerPlant(transform.position.x, transform.position.z);//Important that this is z, not y!
-                jumpState = JumpButtonState.down;
-            }
         }
+
         if (Input.GetKeyDown(KeyCode.X))
         {
-            if (jumpState == JumpButtonState.up)
-            {
-                cropManager.PlayerHarvest(transform.position.x, transform.position.z);
-                jumpState = JumpButtonState.down;
-            }
+            Harvest();
         }
+
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            cropManager.Undo();
+            Undo();
         }
+
         if (Input.GetKeyDown(KeyCode.W))
         {
-            cropManager.Redo();
+            Redo();
         }
-        if (Input.GetKeyUp(KeyCode.Z) || Input.GetKeyUp(KeyCode.X))
+        /*if (Input.GetKeyUp(KeyCode.Z) || Input.GetKeyUp(KeyCode.X))
         {
-            jumpState = JumpButtonState.up;
-            cropManager.TriggerTurn();
-        }
+            check();
+        }*/
     }
 
     public void MoveUp()
