@@ -30,16 +30,9 @@ public class UICreator : MonoBehaviour
     string[] Redo = new [] {"Redo", "やり直し", "בצע שוב"};
     
     Dictionary<GameObject, string[]> localizables;
-    TMP_FontAsset myTMPFont;
     void Start()
     {
     
-        for(int i = 0; i < Font.GetOSInstalledFontNames().Length; i++){
-            Debug.Log(Font.GetOSInstalledFontNames()[i]);
-        }
-        Font theFont = new Font(Font.GetPathsToOSFonts()[Array.IndexOf(Font.GetOSInstalledFontNames(), "Microsoft Sans Serif")]);
-        myTMPFont = TMP_FontAsset.CreateFontAsset(theFont);
-        Debug.Log(myTMPFont);
         canvasObj = new GameObject();
         canvasObj.name = "MyCanvas";
         canvasObj.AddComponent<Canvas>();
@@ -91,7 +84,6 @@ public class UICreator : MonoBehaviour
         textComponent.SetText(text);
         textComponent.alignment = TextAlignmentOptions.Center;
         textComponent.color = Color.black;
-        textComponent.font = myTMPFont;
         return uiObject;
     }
     public void SetToEnglish()
