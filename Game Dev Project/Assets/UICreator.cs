@@ -15,6 +15,9 @@ public class UICreator : MonoBehaviour
     Canvas myCanvas;   
     void Start()
     {
+        int buttonSquareX = 30;
+        int buttonSquareY = 30;
+
         canvasObj = new GameObject();
         canvasObj.name = "MyCanvas";
         canvasObj.AddComponent<Canvas>();
@@ -23,14 +26,14 @@ public class UICreator : MonoBehaviour
         canvasObj.AddComponent<CanvasScaler>();
         canvasObj.AddComponent<GraphicRaycaster>();
         
-        MakeButton("UP", -283, -105, 30, 30, "↑", GameObject.Find("Player").GetComponent<PlayerController>().MoveUp);
-        MakeButton("LEFT", -315, -139, 30, 30, "←", GameObject.Find("Player").GetComponent<PlayerController>().MoveLeft);
-        MakeButton("DOWN", -283, -170, 30, 30, "↓", GameObject.Find("Player").GetComponent<PlayerController>().MoveDown);
-        MakeButton("RIGHT", -251, -139, 30, 30, "→", GameObject.Find("Player").GetComponent<PlayerController>().MoveRight);
-        MakeButton("Plant", -283, -05, 30, 30, "P", GameObject.Find("Player").GetComponent<PlayerController>().Plant);
-        MakeButton("Harvest", -283, 95, 30, 30, "H", GameObject.Find("Player").GetComponent<PlayerController>().Harvest);
-        MakeButton("Undo", 483, -05, 30, 30, "U", GameObject.Find("Player").GetComponent<PlayerController>().Undo);
-        MakeButton("Redo", 483, 95, 30, 30, "R", GameObject.Find("Player").GetComponent<PlayerController>().Redo);
+        MakeButton("UP", -283, -105, buttonSquareX, buttonSquareY, "↑", GameObject.Find("Player").GetComponent<PlayerController>().MoveUp);
+        MakeButton("LEFT", -315, -139, buttonSquareX, buttonSquareY, "←", GameObject.Find("Player").GetComponent<PlayerController>().MoveLeft);
+        MakeButton("DOWN", -283, -170, buttonSquareX, buttonSquareY, "↓", GameObject.Find("Player").GetComponent<PlayerController>().MoveDown);
+        MakeButton("RIGHT", -251, -139, buttonSquareX, buttonSquareY, "→", GameObject.Find("Player").GetComponent<PlayerController>().MoveRight);
+        MakeButton("Plant", -283, -05, buttonSquareX, buttonSquareY, "P", GameObject.Find("Player").GetComponent<PlayerController>().Plant);
+        MakeButton("Harvest", -283, 95, buttonSquareX, buttonSquareY, "H", GameObject.Find("Player").GetComponent<PlayerController>().Harvest);
+        MakeButton("Undo", 483, -05, buttonSquareX, buttonSquareY, "U", GameObject.Find("Player").GetComponent<PlayerController>().Undo);
+        MakeButton("Redo", 483, 95, buttonSquareX, buttonSquareY, "R", GameObject.Find("Player").GetComponent<PlayerController>().Redo);
     }
     GameObject MakeButton(string name, int pos1, int pos2, int size1, int size2, string text, UnityEngine.Events.UnityAction theFunction){
         GameObject uiObject = new GameObject();
