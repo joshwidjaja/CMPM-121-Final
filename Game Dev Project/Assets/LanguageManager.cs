@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class LanguageManager : MonoBehaviour
 {
-    enum Language {English, Japanese, Hebrew};
-    Language currentLanguage;
+    public enum Language {English, Japanese, Hebrew};
+    public Language currentLanguage;
 
     private void Start()
     {
