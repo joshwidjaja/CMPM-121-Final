@@ -137,7 +137,7 @@ The devlog should explain how your code has changed to distinguish between strin
 
 This section should outline which code or data files need to get changed when adding support for a new language or adding a new translatable message to the game.
 
-In our code, we have a separate file, LanguageManager.cs, which contains information for our selected languages. In this file, the code will detect commands given by the user, by selecting a button of their choice, with the language associated to that button being set as the default language button for the current playthrough of the game.
+In our code, we have a separate file, LanguageManager.cs, which contains information for our selected languages. In this file, the code will detect commands given by the user, by selecting a button of their choice, with the language associated to that button being set as the default language button for the current playthrough of the game. Once a button is pressed, the event is sent to UICreator.cs where it will display language based on the user’s input for the onscreen text.
 
 ### Localization
 Tell us about which three languages your game supports. For each language, tell us about how you accomplished that localization. Did a team member use their own knowledge of the language? Did you have a friend, volunteer classmate, or paid expert help? Did you make use of a tool like ChatGPT to help? (If so, describe your prompts so that we can see how you gave the system extra context for your project.)
@@ -149,7 +149,8 @@ Upon starting up the game, there are buttons the player can press to switch betw
 ### Mobile Installation
 
 How did you get your game to be installable on a smartphone-class mobile device? If you followed a tutorial, guide, video, or blogpost, directly link to those resources that helped you learn. What changes were needed to make the game installable?
-We built the game to IOS using unity, but had problems due to you needing a mac computer to build an IOS app. There is an app that allows you to play your unity games on mobile when the phone is plugged in using a cord to your computer, but that isn't really an "installable" game.
+
+To install our game on a mobile device, the game must be exported from a shared platform. While our team was unable to fully install the game as an app and playtest it on a mobile device, the project can be exported as a mobile build. The exported files can then be installed onto a device given that it is compatible with the source in which the game build is being exported from.
 
 ### Mobile Play (Offline)
 
@@ -159,5 +160,5 @@ When implementing mobile play, our team mostly focused on changing how a player 
 
 ## Reflection
 Looking back on how you achieved the new F3 requirements, how has your team’s plan changed? Did you reconsider any of the choices you previously described for Tools and Materials or your Roles? Has your game design evolved now that you've started to think about giving the player more feedback? It would be very suspicious if you didn’t need to change anything. There’s learning value in you documenting how your team’s thinking has changed over time.
-Our plan really hasn't changed. The only thing that has been thought about differently is creation of UI that would look good on mobile if you made a game that you might port to mobile and PC in the future, without doing some complicated platform-specific repositioning of UI elements.
 
+Continuing off of our plan from the previous devlog entry, our team focused on simplifying the overall design and fulfilling the set of requirements. When implementing the new features for F3, one issue we came across was in the selected languages. While all three buttons worked to change the language of the game, the text used for Japanese was not supported and defaulted to using squares. For the time given, we were unable to resolve this issue and attempted using different Google font styles uploaded through Unity. Moreover, our team got the features necessary to install the game on a mobile device; however due to resource limitations, we decided to leave the requirement as demonstrating the game’s ability to be exported and ready for a mobile device. This issue was related to the fact that we required a shared platform between pc and mobile to fully load our game to be played, requiring team members to either have a mac or android to connect with the other device.
